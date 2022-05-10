@@ -1,0 +1,25 @@
+{
+  "innoveduApp": {
+    "topic": {
+      "home": {
+        "title": "Topics",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Topic",
+        "createOrEditLabel": "Create or edit a Topic",
+        "notFound": "No Topics found"
+      },
+      "created": "A new Topic is created with identifier {{ param }}",
+      "updated": "A Topic is updated with identifier {{ param }}",
+      "deleted": "A Topic is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Topic {{ id }}?"
+      },
+      "detail": {
+        "title": "Topic"
+      },
+      "id": "ID",
+      "title": "Title",
+      "description": "Description"
+    }
+  }
+}

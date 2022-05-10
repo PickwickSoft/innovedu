@@ -1,0 +1,25 @@
+{
+  "innoveduApp": {
+    "topic": {
+      "home": {
+        "title": "Topics",
+        "refreshListLabel": "Liste aktualisieren",
+        "createLabel": "Topic erstellen",
+        "createOrEditLabel": "Topic erstellen oder bearbeiten",
+        "notFound": "Keine Topics gefunden"
+      },
+      "created": "Topic erstellt mit ID {{ param }}",
+      "updated": "Topic aktualisiert mit ID {{ param }}",
+      "deleted": "Topic gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Topic {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Topic"
+      },
+      "id": "ID",
+      "title": "Title",
+      "description": "Description"
+    }
+  }
+}

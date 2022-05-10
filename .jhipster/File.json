@@ -1,0 +1,46 @@
+{
+  "applications": "*",
+  "changelogDate": "20220510101917",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "file",
+  "fields": [
+    {
+      "fieldName": "type",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "data",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "any",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength"],
+      "fieldValidateRulesMinlength": "3"
+    },
+    {
+      "fieldName": "dimension",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "File",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "title",
+      "otherEntityName": "project",
+      "otherEntityRelationshipName": "file",
+      "relationshipName": "project",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

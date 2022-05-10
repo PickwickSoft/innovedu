@@ -1,0 +1,53 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="file">
+      <h2 data-cy="fileDetailsHeading"><span jhiTranslate="innoveduApp.file.detail.title">File</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ file.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="innoveduApp.file.type">Type</span></dt>
+        <dd>
+          <span>{{ file.type }}</span>
+        </dd>
+        <dt><span jhiTranslate="innoveduApp.file.data">Data</span></dt>
+        <dd>
+          <div *ngIf="file.data">
+            <a (click)="openFile(file.data, file.dataContentType)" jhiTranslate="entity.action.open">open</a>
+            {{ file.dataContentType }}, {{ byteSize(file.data) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="innoveduApp.file.name">Name</span></dt>
+        <dd>
+          <span>{{ file.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="innoveduApp.file.dimension">Dimension</span></dt>
+        <dd>
+          <span>{{ file.dimension }}</span>
+        </dd>
+        <dt><span jhiTranslate="innoveduApp.file.project">Project</span></dt>
+        <dd>
+          <div *ngIf="file.project">
+            <a [routerLink]="['/project', file.project?.id, 'view']">{{ file.project?.title }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/file', file.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

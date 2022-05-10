@@ -1,0 +1,132 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-file-heading" data-cy="FileCreateUpdateHeading" jhiTranslate="innoveduApp.file.home.createOrEditLabel">
+        Create or edit a File
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="innoveduApp.file.type" for="field_type">Type</label>
+          <input type="text" class="form-control" name="type" id="field_type" data-cy="type" formControlName="type" />
+          <div *ngIf="editForm.get('type')!.invalid && (editForm.get('type')!.dirty || editForm.get('type')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('type')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="innoveduApp.file.data" for="field_data">Data</label>
+          <div>
+            <div *ngIf="editForm.get('data')!.value" class="form-text text-danger clearfix">
+              <a
+                class="pull-start"
+                (click)="openFile(editForm.get('data')!.value, editForm.get('dataContentType')!.value)"
+                jhiTranslate="entity.action.open"
+                >open</a
+              ><br />
+              <span class="pull-start">{{ editForm.get('dataContentType')!.value }}, {{ byteSize(editForm.get('data')!.value) }}</span>
+              <button
+                type="button"
+                (click)="editForm.patchValue({ data: null }); editForm.patchValue({ dataContentType: null })"
+                class="btn btn-secondary btn-xs pull-end"
+              >
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+            <input
+              type="file"
+              id="file_data"
+              data-cy="data"
+              (change)="setFileData($event, 'data', false)"
+              jhiTranslate="entity.action.addblob"
+            />
+          </div>
+          <input type="hidden" class="form-control" name="data" id="field_data" data-cy="data" formControlName="data" />
+          <input type="hidden" class="form-control" name="dataContentType" id="field_dataContentType" formControlName="dataContentType" />
+          <div *ngIf="editForm.get('data')!.invalid && (editForm.get('data')!.dirty || editForm.get('data')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('data')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="innoveduApp.file.name" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('name')?.errors?.minlength"
+              jhiTranslate="entity.validation.minlength"
+              [translateValues]="{ min: 3 }"
+            >
+              This field is required to be at least 3 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="innoveduApp.file.dimension" for="field_dimension">Dimension</label>
+          <input type="number" class="form-control" name="dimension" id="field_dimension" data-cy="dimension" formControlName="dimension" />
+          <div *ngIf="editForm.get('dimension')!.invalid && (editForm.get('dimension')!.dirty || editForm.get('dimension')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('dimension')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('dimension')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="innoveduApp.file.project" for="field_project">Project</label>
+          <select class="form-control" id="field_project" data-cy="project" name="project" formControlName="project">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="projectOption.id === editForm.get('project')!.value?.id ? editForm.get('project')!.value : projectOption"
+              *ngFor="let projectOption of projectsSharedCollection; trackBy: trackProjectById"
+            >
+              {{ projectOption.title }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
