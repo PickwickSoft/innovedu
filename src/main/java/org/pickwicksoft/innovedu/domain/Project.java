@@ -34,7 +34,7 @@ public class Project implements Serializable {
     private String description;
 
     @Column(name = "stars")
-    private Integer stars;
+    private Integer stars = 0;
 
     @NotNull
     @Column(name = "approved", nullable = false)

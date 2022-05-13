@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.pickwicksoft.innovedu.domain.Project;
 import org.pickwicksoft.innovedu.repository.ProjectRepository;
+import org.pickwicksoft.innovedu.security.SecurityUtils;
 import org.pickwicksoft.innovedu.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -175,6 +175,22 @@ public class ProjectResource {
             page = projectRepository.findAllWithEagerRelationships(pageable);
         } else {
             page = projectRepository.findAll(pageable);
+        }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/projects/user")
+    public ResponseEntity<List<Project>> getAllProjectsOfUser(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(required = false, defaultValue = "true") boolean eagerload
+    ) {
+        log.debug("REST request to get a page of Projects from current user");
+        Page<Project> page;
+        if (eagerload) {
+            page = projectRepository.findAllWithEagerRelationshipsOfCurrentUser(pageable);
+        } else {
+            page = projectRepository.findByUserIsCurrentUserPageable(pageable);
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());

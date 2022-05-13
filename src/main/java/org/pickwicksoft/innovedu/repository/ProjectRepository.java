@@ -17,6 +17,9 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     @Query("select project from Project project where project.user.login = ?#{principal.preferredUsername}")
     List<Project> findByUserIsCurrentUser();
 
+    @Query("select project from Project project where project.user.login = ?#{principal.preferredUsername}")
+    Page<Project> findByUserIsCurrentUserPageable(Pageable pageable);
+
     default Optional<Project> findOneWithEagerRelationships(Long id) {
         return this.findOneWithToOneRelationships(id);
     }
@@ -40,4 +43,10 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     @Query("select project from Project project left join fetch project.user left join fetch project.topic where project.id =:id")
     Optional<Project> findOneWithToOneRelationships(@Param("id") Long id);
+
+    @Query(
+        value = "select distinct project from Project project left join fetch project.user left join fetch project.topic where project.user.login = ?#{principal.preferredUsername}",
+        countQuery = "select count(distinct project) from Project project"
+    )
+    Page<Project> findAllWithEagerRelationshipsOfCurrentUser(Pageable pageable);
 }
