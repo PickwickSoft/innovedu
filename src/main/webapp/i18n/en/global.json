@@ -26,6 +26,7 @@
         "userManagement": "User management",
         "tracker": "User tracker",
         "metrics": "Metrics",
+        "projects": "Project administration",
         "health": "Health",
         "configuration": "Configuration",
         "logs": "Logs",

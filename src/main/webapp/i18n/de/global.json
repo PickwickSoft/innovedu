@@ -26,6 +26,7 @@
         "userManagement": "Benutzerverwaltung",
         "tracker": "Benutzer Aktivitäten",
         "metrics": "Metriken",
+        "projects": "Projekt Verwaltung",
         "health": "Status",
         "configuration": "Konfiguration",
         "logs": "Protokoll",

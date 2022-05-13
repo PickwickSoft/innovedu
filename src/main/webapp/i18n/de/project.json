@@ -2,20 +2,20 @@
   "innoveduApp": {
     "project": {
       "home": {
-        "title": "Projects",
+        "title": "Projekte",
         "refreshListLabel": "Liste aktualisieren",
-        "createLabel": "Project erstellen",
-        "createOrEditLabel": "Project erstellen oder bearbeiten",
-        "notFound": "Keine Projects gefunden"
+        "createLabel": "Projekt erstellen",
+        "createOrEditLabel": "Projekt erstellen oder bearbeiten",
+        "notFound": "Keine Projekte gefunden"
       },
-      "created": "Project erstellt mit ID {{ param }}",
-      "updated": "Project aktualisiert mit ID {{ param }}",
-      "deleted": "Project gelöscht mit ID {{ param }}",
+      "created": "Projekt erstellt mit ID {{ param }}",
+      "updated": "Projekt aktualisiert mit ID {{ param }}",
+      "deleted": "Projekt gelöscht mit ID {{ param }}",
       "delete": {
-        "question": "Soll Project {{ id }} wirklich dauerhaft gelöscht werden?"
+        "question": "Soll Projekt {{ id }} wirklich dauerhaft gelöscht werden?"
       },
       "detail": {
-        "title": "Project"
+        "title": "Projekt"
       },
       "id": "ID",
       "title": "Title",
