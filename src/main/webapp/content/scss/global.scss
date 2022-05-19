@@ -1,7 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 @import 'bootstrap-variables';
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
-
 /* ==============================================================
 Bootstrap tweaks
 ===============================================================*/
@@ -18,6 +20,7 @@ h4 {
 a {
   color: #533f03;
   font-weight: bold;
+  text-decoration: none;
 }
 
 a:hover {
@@ -73,6 +76,15 @@ Generic styles
   padding: 1.5%;
   margin-top: 20px;
   border: none;
+}
+
+.padded {
+  padding: 1.5%;
+}
+
+.jh-component {
+  border: none;
+  background-color: #ffffff;
 }
 
 .error {
