@@ -8,11 +8,14 @@ import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.pickwicksoft.innovedu.domain.Project;
+import org.pickwicksoft.innovedu.domain.User;
 import org.pickwicksoft.innovedu.repository.ProjectRepository;
+import org.pickwicksoft.innovedu.repository.UserRepository;
 import org.pickwicksoft.innovedu.security.SecurityUtils;
 import org.pickwicksoft.innovedu.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,8 +45,11 @@ public class ProjectResource {
 
     private final ProjectRepository projectRepository;
 
-    public ProjectResource(ProjectRepository projectRepository) {
+    private final UserRepository userRepository;
+
+    public ProjectResource(ProjectRepository projectRepository, UserRepository userRepository) {
         this.projectRepository = projectRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -58,6 +64,13 @@ public class ProjectResource {
         log.debug("REST request to save Project : {}", project);
         if (project.getId() != null) {
             throw new BadRequestAlertException("A new project cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        if (project.getUser() == null) {
+            var currentUserLogin = SecurityUtils.getCurrentUserLogin();
+            if (currentUserLogin.isPresent()) {
+                var user = userRepository.findOneByLogin(currentUserLogin.get());
+                user.ifPresent(project::setUser);
+            }
         }
         Project result = projectRepository.save(project);
         return ResponseEntity
