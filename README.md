@@ -260,6 +260,11 @@ See Cypress' documentation for setting OS [environment variables](https://docs.c
 
 **Auth0 requires a user to provide authorization consent on the first login.** Consent flow is currently not handled in the Cypress test suite. To mitigate the issue, you can use a user account that has already granted consent to authorize application access via interactive login.
 
+### Material theming
+
+The theme is created with this generator: [Green material theme](https://materialtheme.arcsine.dev/?c=YHBhbGV0dGU$YHByaW1hcnk$YF48IzQ0N2I0MyIsIj9lcjwjYzdkN2M3IiwiO2VyPCMyZDVlMmN$LCIlPmBePCM3OTc5NzkiLCI~ZXI8I2Q3ZDdkNyIsIjtlcjwjNWM1YzVjfiwid2Fybj5gXjwjZmYwMDAwIiwiP2VyPCNmZmIzYjMiLCI7ZXI8I2ZmMDAwMH4sIj9UZXh0PCMwMDAwMDAiLCI~PTwjZmFmYWZhIiwiO1RleHQ8I2ZmZmZmZiIsIjs9PCMyYzJjMmN$LCJmb250cz5bYEA8KC00fixgQDwoLTN$LGBAPCgtMn4sYEA8KC0xfixgQDxoZWFkbGluZX4sYEA8dGl0bGV$LGBAPHN1YiktMn4sYEA8c3ViKS0xfixgQDxib2R5LTJ$LGBAPGJvZHktMX4sYEA8YnV0dG9ufixgQDxjYXB0aW9ufixgQDxpbnB1dCIsInNpemU$bnVsbH1dLCJpY29uczxGaWxsZWQiLCI~bmVzcz50cnVlLCJ2ZXJzaW9uPjEzfQ==)
+It is used for theming the whole application.
+
 ## Building for production
 
 ### Packaging as jar
