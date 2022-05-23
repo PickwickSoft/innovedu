@@ -3,7 +3,8 @@ package org.pickwicksoft.innovedu.domain;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -38,10 +39,10 @@ public class Project implements Serializable {
 
     @NotNull
     @Column(name = "approved", nullable = false)
-    private Boolean approved;
+    private Boolean approved = false;
 
     @Column(name = "date")
-    private ZonedDateTime date;
+    private ZonedDateTime date = ZonedDateTime.now();
 
     @ManyToOne
     private User user;
