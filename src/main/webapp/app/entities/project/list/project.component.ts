@@ -12,6 +12,7 @@ import { ParseLinks } from 'app/core/util/parse-links.service';
 @Component({
   selector: 'jhi-project',
   templateUrl: './project.component.html',
+  styleUrls: ['./project-list.scss'],
 })
 export class ProjectComponent implements OnInit {
   projects: IProject[];

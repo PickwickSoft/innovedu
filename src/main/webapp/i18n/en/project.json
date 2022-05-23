@@ -6,7 +6,8 @@
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Project",
         "createOrEditLabel": "Create or edit a Project",
-        "notFound": "No Projects found"
+        "notFound": "No Projects found",
+        "search": "Search in all projects"
       },
       "created": "A new Project is created with identifier {{ param }}",
       "updated": "A Project is updated with identifier {{ param }}",

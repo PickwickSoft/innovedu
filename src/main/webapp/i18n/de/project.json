@@ -6,7 +6,8 @@
         "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Projekt erstellen",
         "createOrEditLabel": "Projekt erstellen oder bearbeiten",
-        "notFound": "Keine Projekte gefunden"
+        "notFound": "Keine Projekte gefunden",
+        "search": "Suche in allen Projekten"
       },
       "created": "Projekt erstellt mit ID {{ param }}",
       "updated": "Projekt aktualisiert mit ID {{ param }}",

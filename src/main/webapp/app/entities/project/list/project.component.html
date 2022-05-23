@@ -1,14 +1,25 @@
 <div>
-  <h2 id="page-heading" data-cy="ProjectHeading">
-    <span jhiTranslate="innoveduApp.project.home.title">Projects</span>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="reset()" [disabled]="isLoading">
+  <div class="w-100 text-center p-8 py-12">
+    <h1 class="font-bold text-4xl text-center" jhiTranslate="innoveduApp.project.home.title">Projects</h1>
+    <p class="text-3xl font-light">
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+      erat, sed diam voluptua.
+    </p>
+    <mat-form-field [hidden]="projects?.length === 0">
+      <input matInput />
+      <mat-placeholder jhiTranslate="innoveduApp.project.home.search">Search in all projects</mat-placeholder>
+    </mat-form-field>
+  </div>
+  <h2 id="page-heading" class="mb-8" data-cy="ProjectHeading">
+    <div class="d-flex justify-content-end space-x-1">
+      <button mat-raised-button (click)="reset()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="innoveduApp.project.home.refreshListLabel">Refresh List</span>
       </button>
 
       <button
+        mat-raised-button
+        color="primary"
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-project"
@@ -28,77 +39,25 @@
     <span jhiTranslate="innoveduApp.project.home.notFound">No projects found</span>
   </div>
 
-  <div class="table-responsive" id="entities" *ngIf="projects && projects.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="reset()">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="title"><span jhiTranslate="innoveduApp.project.title">Title</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="description">
-            <span jhiTranslate="innoveduApp.project.description">Description</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="stars"><span jhiTranslate="innoveduApp.project.stars">Stars</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="approved">
-            <span jhiTranslate="innoveduApp.project.approved">Approved</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="date"><span jhiTranslate="innoveduApp.project.date">Date</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="user.login">
-            <span jhiTranslate="innoveduApp.project.user">User</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="topic.title">
-            <span jhiTranslate="innoveduApp.project.topic">Topic</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
-        <tr *ngFor="let project of projects; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/project', project.id, 'view']">{{ project.id }}</a>
-          </td>
-          <td>{{ project.title }}</td>
-          <td>{{ project.description }}</td>
-          <td>{{ project.stars }}</td>
-          <td>{{ project.approved }}</td>
-          <td>{{ project.date | formatMediumDatetime }}</td>
-          <td>
-            {{ project.user?.login }}
-          </td>
-          <td>
-            <div *ngIf="project.topic">
-              <a [routerLink]="['/topic', project.topic?.id, 'view']">{{ project.topic?.title }}</a>
-            </div>
-          </td>
-          <td class="text-end">
-            <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="['/project', project.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
-
-              <button
-                type="submit"
-                [routerLink]="['/project', project.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-              </button>
-
-              <button type="submit" (click)="delete(project)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-y-4 gap-x-10 mr-auto ml-auto"
+    data-cy="entityTable"
+    infinite-scroll
+    (scrolled)="loadPage(page + 1)"
+    [infiniteScrollDisabled]="page >= links['last']"
+    [infiniteScrollDistance]="0"
+  >
+    <a *ngFor="let project of projects; trackBy: trackId" [routerLink]="['/project', project.id, 'view']" data-cy="entityDetailsButton">
+      <mat-card class="project-card hover:shadow-xl">
+        <mat-card-title>{{ project.title }}</mat-card-title>
+        <mat-card-subtitle>
+          <fa-icon class="text-yellow-400" icon="star" [fixedWidth]="true"></fa-icon>
+          {{ project.stars }}
+        </mat-card-subtitle>
+        <mat-card-content>
+          {{ project.description }}
+        </mat-card-content>
+      </mat-card>
+    </a>
   </div>
 </div>
