@@ -40,12 +40,14 @@
   </div>
 
   <div
+    id="entities"
     class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-y-4 gap-x-10 mr-auto ml-auto"
     data-cy="entityTable"
     infinite-scroll
     (scrolled)="loadPage(page + 1)"
     [infiniteScrollDisabled]="page >= links['last']"
     [infiniteScrollDistance]="0"
+    *ngIf="projects && projects.length > 0"
   >
     <a *ngFor="let project of projects; trackBy: trackId" [routerLink]="['/project', project.id, 'view']" data-cy="entityDetailsButton">
       <mat-card class="project-card hover:shadow-xl">
