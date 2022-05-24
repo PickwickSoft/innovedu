@@ -156,8 +156,14 @@ public class FileResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of files in body.
      */
     @GetMapping("/files")
-    public List<File> getAllFiles(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+    public List<File> getAllFiles(
+        @RequestParam(required = false, defaultValue = "false") boolean eagerload,
+        @RequestParam(required = false, defaultValue = "-1") Long projectId
+    ) {
         log.debug("REST request to get all Files");
+        if (projectId != -1) {
+            return fileRepository.findAllWithToOneRelationshipsForProject(projectId);
+        }
         return fileRepository.findAllWithEagerRelationships();
     }
 

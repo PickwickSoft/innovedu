@@ -35,6 +35,9 @@ public interface FileRepository extends JpaRepository<File, Long> {
     @Query("select distinct file from File file left join fetch file.project")
     List<File> findAllWithToOneRelationships();
 
+    @Query("select distinct file from File file left join fetch file.project where file.project.id = :id")
+    List<File> findAllWithToOneRelationshipsForProject(@Param("id") Long projectId);
+
     @Query("select file from File file left join fetch file.project where file.id =:id")
     Optional<File> findOneWithToOneRelationships(@Param("id") Long id);
 }
