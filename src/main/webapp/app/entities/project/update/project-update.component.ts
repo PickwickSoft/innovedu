@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import dayjs from 'dayjs/esm';
-import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 
 import { IProject, Project } from '../project.model';
 import { ProjectService } from '../service/project.service';
@@ -29,10 +28,6 @@ export class ProjectUpdateComponent implements OnInit {
     id: [],
     title: [null, [Validators.required, Validators.minLength(3)]],
     description: [null, [Validators.required, Validators.minLength(3)]],
-    stars: [],
-    approved: [null, [Validators.required]],
-    date: [],
-    user: [],
     topic: [],
   });
 
@@ -103,10 +98,6 @@ export class ProjectUpdateComponent implements OnInit {
       id: project.id,
       title: project.title,
       description: project.description,
-      stars: project.stars,
-      approved: project.approved,
-      date: project.date ? project.date.format(DATE_TIME_FORMAT) : null,
-      user: project.user,
       topic: project.topic,
     });
 
@@ -134,10 +125,6 @@ export class ProjectUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       title: this.editForm.get(['title'])!.value,
       description: this.editForm.get(['description'])!.value,
-      stars: this.editForm.get(['stars'])!.value,
-      approved: this.editForm.get(['approved'])!.value,
-      date: this.editForm.get(['date'])!.value ? dayjs(this.editForm.get(['date'])!.value, DATE_TIME_FORMAT) : undefined,
-      user: this.editForm.get(['user'])!.value,
       topic: this.editForm.get(['topic'])!.value,
     };
   }
