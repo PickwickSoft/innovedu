@@ -123,9 +123,6 @@ public class FileResource {
         Optional<File> result = fileRepository
             .findById(file.getId())
             .map(existingFile -> {
-                if (file.getType() != null) {
-                    existingFile.setType(file.getType());
-                }
                 if (file.getData() != null) {
                     existingFile.setData(file.getData());
                 }
@@ -134,9 +131,6 @@ public class FileResource {
                 }
                 if (file.getName() != null) {
                     existingFile.setName(file.getName());
-                }
-                if (file.getDimension() != null) {
-                    existingFile.setDimension(file.getDimension());
                 }
 
                 return existingFile;

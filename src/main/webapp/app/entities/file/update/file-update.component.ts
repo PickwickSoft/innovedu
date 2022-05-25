@@ -24,11 +24,9 @@ export class FileUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    type: [null, [Validators.required]],
     data: [null, [Validators.required]],
     dataContentType: [],
     name: [null, [Validators.required, Validators.minLength(3)]],
-    dimension: [null, [Validators.required]],
     project: [],
   });
 
@@ -104,11 +102,9 @@ export class FileUpdateComponent implements OnInit {
   protected updateForm(file: IFile): void {
     this.editForm.patchValue({
       id: file.id,
-      type: file.type,
       data: file.data,
       dataContentType: file.dataContentType,
       name: file.name,
-      dimension: file.dimension,
       project: file.project,
     });
 
@@ -129,11 +125,9 @@ export class FileUpdateComponent implements OnInit {
     return {
       ...new File(),
       id: this.editForm.get(['id'])!.value,
-      type: this.editForm.get(['type'])!.value,
       dataContentType: this.editForm.get(['dataContentType'])!.value,
       data: this.editForm.get(['data'])!.value,
       name: this.editForm.get(['name'])!.value,
-      dimension: this.editForm.get(['dimension'])!.value,
       project: this.editForm.get(['project'])!.value,
     };
   }
