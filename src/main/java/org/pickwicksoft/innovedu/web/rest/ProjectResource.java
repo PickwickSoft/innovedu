@@ -65,13 +65,7 @@ public class ProjectResource {
         if (project.getId() != null) {
             throw new BadRequestAlertException("A new project cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        if (project.getUser() == null) {
-            var currentUserLogin = SecurityUtils.getCurrentUserLogin();
-            if (currentUserLogin.isPresent()) {
-                var user = userRepository.findOneByLogin(currentUserLogin.get());
-                user.ifPresent(project::setUser);
-            }
-        }
+        assignUser(project);
         Project result = projectRepository.save(project);
         return ResponseEntity
             .created(new URI("/api/projects/" + result.getId()))
@@ -105,7 +99,7 @@ public class ProjectResource {
         if (!projectRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-
+        assignUser(project);
         Project result = projectRepository.save(project);
         return ResponseEntity
             .ok()
@@ -236,5 +230,15 @@ public class ProjectResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    private void assignUser(Project project) {
+        if (project.getUser() == null) {
+            var currentUserLogin = SecurityUtils.getCurrentUserLogin();
+            if (currentUserLogin.isPresent()) {
+                var user = userRepository.findOneByLogin(currentUserLogin.get());
+                user.ifPresent(project::setUser);
+            }
+        }
     }
 }
