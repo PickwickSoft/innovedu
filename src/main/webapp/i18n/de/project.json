@@ -19,13 +19,13 @@
         "title": "Projekt"
       },
       "id": "ID",
-      "title": "Title",
-      "description": "Description",
-      "stars": "Stars",
+      "title": "Titel",
+      "description": "Beschreibung",
+      "stars": "Sterne",
       "approved": "Approved",
-      "date": "Date",
+      "date": "Datum",
       "user": "User",
-      "topic": "Topic"
+      "topic": "Thema"
     }
   }
 }

@@ -1,36 +1,45 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="project">
+  <div class="">
+    <div class="text-center max-w-3xl mr-auto ml-auto" *ngIf="project">
       <jhi-alert-error></jhi-alert-error>
 
       <jhi-alert></jhi-alert>
+      <h1 class="text-theme text-5xl font-medium pb-6">{{ project.title }}</h1>
 
-      <h1 class="text-theme">{{ project.title }}</h1>
-      <p>{{ project.description }}</p>
-
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="innoveduApp.project.stars">Stars</span></dt>
-        <dd>
-          <span>{{ project.stars }}</span>
-        </dd>
-        <dt><span jhiTranslate="innoveduApp.project.date">Date</span></dt>
-        <dd>
+      <div class="flex flex-col sm:flex-row justify-center gap-x-6 gap-y-1 pb-6">
+        <div>
+          <span class="text-theme font-medium" jhiTranslate="innoveduApp.project.topic">Topic</span>
+          <a [routerLink]="['/topic', project.topic?.id, 'view']">{{ project.topic?.title }}</a>
+        </div>
+        <div>
+          <span class="text-theme font-medium" jhiTranslate="innoveduApp.project.date">Date</span>
           <span>{{ project.date | formatMediumDatetime }}</span>
-        </dd>
-        <dt *ngIf="account !== null"><span jhiTranslate="innoveduApp.project.user">User</span></dt>
-        <dd *ngIf="account !== null">
-          <span>{{ project.user?.firstName }} {{ project.user?.lastName }}</span>
-        </dd>
-        <dt><span jhiTranslate="innoveduApp.project.topic">Topic</span></dt>
-        <dd>
-          <div *ngIf="project.topic">
-            <a [routerLink]="['/topic', project.topic?.id, 'view']">{{ project.topic?.title }}</a>
-          </div>
-        </dd>
-      </dl>
+        </div>
+        <div>
+          <span class="text-theme font-medium" *ngIf="account !== null" jhiTranslate="innoveduApp.project.user">User</span>
+          <span *ngIf="account !== null">{{ project.user?.firstName }} {{ project.user?.lastName }}</span>
+        </div>
+      </div>
+
+      <p class="text-2xl font-normal pb-6">{{ project.description }}</p>
+
+      <div class="pb-6" *ngIf="files && files?.length != 0">
+        <fa-icon class="pr-4" icon="paperclip"></fa-icon>
+        <span class="pr-4" *ngFor="let file of files">
+          <a *ngIf="file.data" (click)="openFile(file.data, file.dataContentType)">
+            {{ file.name }}.{{ getExtension(file.dataContentType) }}
+          </a>
+        </span>
+      </div>
 
       <button mat-stroked-button color="primary" type="submit" (click)="previousState()" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button mat-button class="pb-6">
+        <fa-icon class="text-yellow-400 pr-2" icon="star"></fa-icon>
+        <span>{{ project.stars }}</span>
+        <span jhiTranslate="innoveduApp.project.stars">Stars</span>
       </button>
 
       <button mat-raised-button color="primary" type="button" [routerLink]="['/project', project.id, 'edit']" class="">
