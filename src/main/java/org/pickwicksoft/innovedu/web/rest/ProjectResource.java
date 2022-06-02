@@ -9,9 +9,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.pickwicksoft.innovedu.domain.Project;
 import org.pickwicksoft.innovedu.domain.User;
+import org.pickwicksoft.innovedu.repository.FileRepository;
 import org.pickwicksoft.innovedu.repository.ProjectRepository;
 import org.pickwicksoft.innovedu.repository.UserRepository;
 import org.pickwicksoft.innovedu.security.SecurityUtils;
+import org.pickwicksoft.innovedu.service.assign.FileDeassigner;
 import org.pickwicksoft.innovedu.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,9 +49,12 @@ public class ProjectResource {
 
     private final UserRepository userRepository;
 
-    public ProjectResource(ProjectRepository projectRepository, UserRepository userRepository) {
+    private final FileDeassigner fileDeassigner;
+
+    public ProjectResource(ProjectRepository projectRepository, UserRepository userRepository, FileDeassigner fileDeassigner) {
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
+        this.fileDeassigner = fileDeassigner;
     }
 
     /**
@@ -225,6 +230,7 @@ public class ProjectResource {
     @DeleteMapping("/projects/{id}")
     public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
         log.debug("REST request to delete Project : {}", id);
+        fileDeassigner.deassignFilesByProjectId(id);
         projectRepository.deleteById(id);
         return ResponseEntity
             .noContent()
