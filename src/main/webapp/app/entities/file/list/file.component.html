@@ -3,15 +3,17 @@
     <span jhiTranslate="innoveduApp.file.home.title">Files</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+      <button mat-raised-button class="me-2" (click)="loadAll()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="innoveduApp.file.home.refreshListLabel">Refresh List</span>
       </button>
 
       <button
+        mat-raised-button
+        color="primary"
         id="jh-create-entity"
         data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-file"
+        class="jh-create-entity create-file"
         [routerLink]="['/file/new']"
       >
         <fa-icon icon="plus"></fa-icon>
