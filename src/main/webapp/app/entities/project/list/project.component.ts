@@ -22,6 +22,7 @@ export class ProjectComponent implements OnInit {
   page: number;
   predicate: string;
   ascending: boolean;
+  value: any;
 
   constructor(protected projectService: ProjectService, protected modalService: NgbModal, protected parseLinks: ParseLinks) {
     this.projects = [];

@@ -1,3 +1,8 @@
 .project-card {
-  background-color: theme('colors.card');
+  background-color: var(--card);
+  min-height: 165px;
+}
+
+.two-lines {
+  @apply line-clamp-2;
 }

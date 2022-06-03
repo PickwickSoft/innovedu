@@ -6,8 +6,11 @@
       erat, sed diam voluptua.
     </p>
     <mat-form-field class="w-96 max-w-full" [hidden]="projects?.length === 0">
-      <input matInput />
       <mat-placeholder jhiTranslate="innoveduApp.project.home.search">Search in all projects</mat-placeholder>
+      <input matInput [(ngModel)]="value" type="search" />
+      <button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value = ''">
+        <mat-icon>close</mat-icon>
+      </button>
     </mat-form-field>
   </div>
   <h2 id="page-heading" class="mb-8" data-cy="ProjectHeading">
@@ -56,7 +59,7 @@
           <fa-icon class="text-yellow-400" icon="star" [fixedWidth]="true"></fa-icon>
           {{ project.stars }}
         </mat-card-subtitle>
-        <mat-card-content>
+        <mat-card-content class="two-lines">
           {{ project.description }}
         </mat-card-content>
       </mat-card>
