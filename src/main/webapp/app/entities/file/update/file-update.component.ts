@@ -113,7 +113,7 @@ export class FileUpdateComponent implements OnInit {
 
   protected loadRelationshipsOptions(): void {
     this.projectService
-      .query()
+      .queryOfUser()
       .pipe(map((res: HttpResponse<IProject[]>) => res.body ?? []))
       .pipe(
         map((projects: IProject[]) => this.projectService.addProjectToCollectionIfMissing(projects, this.editForm.get('project')!.value))
