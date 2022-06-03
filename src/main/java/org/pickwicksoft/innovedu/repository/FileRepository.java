@@ -40,4 +40,7 @@ public interface FileRepository extends JpaRepository<File, Long> {
 
     @Query("select file from File file left join fetch file.project where file.id =:id")
     Optional<File> findOneWithToOneRelationships(@Param("id") Long id);
+
+    @Query("select distinct file from File file left join fetch file.project where file.user.login = ?#{principal.preferredUsername}")
+    List<File> findAllWithToOneRelationshipsCurrentUser();
 }

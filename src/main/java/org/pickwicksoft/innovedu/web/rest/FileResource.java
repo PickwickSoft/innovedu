@@ -168,6 +168,18 @@ public class FileResource {
     }
 
     /**
+     * {@code GET  /files/user} : get all the files of current user.
+     *
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of files in body.
+     */
+    @GetMapping("/files/user")
+    public List<File> getAllFilesOfCurrentUser(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+        log.debug("REST request to get all Files");
+        return fileRepository.findAllWithToOneRelationshipsCurrentUser();
+    }
+
+    /**
      * {@code GET  /files/:id} : get the "id" file.
      *
      * @param id the id of the file to retrieve.
