@@ -13,7 +13,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "file")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class File implements Serializable {
+public class File implements Serializable, UserAssignable {
 
     private static final long serialVersionUID = 1L;
 
@@ -39,6 +39,9 @@ public class File implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(value = { "user", "topic" }, allowSetters = true)
     private Project project;
+
+    @ManyToOne
+    private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -135,5 +138,13 @@ public class File implements Serializable {
             ", dataContentType='" + getDataContentType() + "'" +
             ", name='" + getName() + "'" +
             "}";
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

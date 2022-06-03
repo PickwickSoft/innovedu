@@ -13,6 +13,7 @@ import org.pickwicksoft.innovedu.repository.FileRepository;
 import org.pickwicksoft.innovedu.repository.ProjectRepository;
 import org.pickwicksoft.innovedu.repository.UserRepository;
 import org.pickwicksoft.innovedu.security.SecurityUtils;
+import org.pickwicksoft.innovedu.service.assign.CurrentUserAssign;
 import org.pickwicksoft.innovedu.service.assign.FileDeassigner;
 import org.pickwicksoft.innovedu.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
@@ -51,10 +52,18 @@ public class ProjectResource {
 
     private final FileDeassigner fileDeassigner;
 
-    public ProjectResource(ProjectRepository projectRepository, UserRepository userRepository, FileDeassigner fileDeassigner) {
+    private final CurrentUserAssign currentUserAssign;
+
+    public ProjectResource(
+        ProjectRepository projectRepository,
+        UserRepository userRepository,
+        FileDeassigner fileDeassigner,
+        CurrentUserAssign currentUserAssign
+    ) {
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
         this.fileDeassigner = fileDeassigner;
+        this.currentUserAssign = currentUserAssign;
     }
 
     /**
@@ -70,7 +79,7 @@ public class ProjectResource {
         if (project.getId() != null) {
             throw new BadRequestAlertException("A new project cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        assignUser(project);
+        currentUserAssign.assignUser(project);
         Project result = projectRepository.save(project);
         return ResponseEntity
             .created(new URI("/api/projects/" + result.getId()))
@@ -104,7 +113,8 @@ public class ProjectResource {
         if (!projectRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-        assignUser(project);
+
+        currentUserAssign.assignUser(project);
         Project result = projectRepository.save(project);
         return ResponseEntity
             .ok()
@@ -236,15 +246,5 @@ public class ProjectResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
-    }
-
-    private void assignUser(Project project) {
-        if (project.getUser() == null) {
-            var currentUserLogin = SecurityUtils.getCurrentUserLogin();
-            if (currentUserLogin.isPresent()) {
-                var user = userRepository.findOneByLogin(currentUserLogin.get());
-                user.ifPresent(project::setUser);
-            }
-        }
     }
 }

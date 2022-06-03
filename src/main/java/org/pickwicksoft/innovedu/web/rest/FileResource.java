@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.pickwicksoft.innovedu.domain.File;
 import org.pickwicksoft.innovedu.repository.FileRepository;
+import org.pickwicksoft.innovedu.service.assign.CurrentUserAssign;
 import org.pickwicksoft.innovedu.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,8 +37,11 @@ public class FileResource {
 
     private final FileRepository fileRepository;
 
-    public FileResource(FileRepository fileRepository) {
+    private final CurrentUserAssign currentUserAssign;
+
+    public FileResource(FileRepository fileRepository, CurrentUserAssign currentUserAssign) {
         this.fileRepository = fileRepository;
+        this.currentUserAssign = currentUserAssign;
     }
 
     /**
@@ -53,6 +57,7 @@ public class FileResource {
         if (file.getId() != null) {
             throw new BadRequestAlertException("A new file cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        currentUserAssign.assignUser(file);
         File result = fileRepository.save(file);
         return ResponseEntity
             .created(new URI("/api/files/" + result.getId()))
@@ -85,6 +90,7 @@ public class FileResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
+        currentUserAssign.assignUser(file);
         File result = fileRepository.save(file);
         return ResponseEntity
             .ok()
