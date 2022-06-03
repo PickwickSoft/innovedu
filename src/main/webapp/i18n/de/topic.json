@@ -2,24 +2,24 @@
   "innoveduApp": {
     "topic": {
       "home": {
-        "title": "Topics",
+        "title": "Themen",
         "refreshListLabel": "Liste aktualisieren",
-        "createLabel": "Topic erstellen",
-        "createOrEditLabel": "Topic erstellen oder bearbeiten",
-        "notFound": "Keine Topics gefunden"
+        "createLabel": "Thema erstellen",
+        "createOrEditLabel": "Thema erstellen oder bearbeiten",
+        "notFound": "Keine Themen gefunden"
       },
-      "created": "Topic erstellt mit ID {{ param }}",
-      "updated": "Topic aktualisiert mit ID {{ param }}",
-      "deleted": "Topic gelöscht mit ID {{ param }}",
+      "created": "Thema erstellt mit ID {{ param }}",
+      "updated": "Thema aktualisiert mit ID {{ param }}",
+      "deleted": "Thema gelöscht mit ID {{ param }}",
       "delete": {
-        "question": "Soll Topic {{ id }} wirklich dauerhaft gelöscht werden?"
+        "question": "Soll Thema {{ id }} wirklich dauerhaft gelöscht werden?"
       },
       "detail": {
-        "title": "Topic"
+        "title": "Thema"
       },
       "id": "ID",
-      "title": "Title",
-      "description": "Description"
+      "title": "Titel",
+      "description": "Beschreibung"
     }
   }
 }
