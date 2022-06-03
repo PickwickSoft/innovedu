@@ -12,7 +12,7 @@
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-project"
-        [routerLink]="['/project/new']"
+        [routerLink]="['/admin/project/new']"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="innoveduApp.project.home.createLabel"> Create a new Project </span>
@@ -54,7 +54,7 @@
       <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
         <tr *ngFor="let project of projects; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/project', project.id, 'view']">{{ project.id }}</a>
+            <a [routerLink]="['/admin/project', project.id, 'view']">{{ project.id }}</a>
           </td>
           <td>{{ project.title }}</td>
           <td>{{ project.description }}</td>
@@ -73,7 +73,7 @@
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/project', project.id, 'view']"
+                [routerLink]="['/admin/project', project.id, 'view']"
                 class="btn btn-info btn-sm"
                 data-cy="entityDetailsButton"
               >
@@ -83,7 +83,7 @@
 
               <button
                 type="submit"
-                [routerLink]="['/project', project.id, 'edit']"
+                [routerLink]="['/admin/project', project.id, 'edit']"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >
