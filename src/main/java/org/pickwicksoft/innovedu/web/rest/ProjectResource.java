@@ -5,25 +5,18 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import org.apache.commons.lang3.StringUtils;
 import org.pickwicksoft.innovedu.domain.Project;
-import org.pickwicksoft.innovedu.domain.User;
-import org.pickwicksoft.innovedu.repository.FileRepository;
 import org.pickwicksoft.innovedu.repository.ProjectRepository;
 import org.pickwicksoft.innovedu.repository.UserRepository;
-import org.pickwicksoft.innovedu.security.SecurityUtils;
 import org.pickwicksoft.innovedu.service.assign.CurrentUserAssign;
 import org.pickwicksoft.innovedu.service.assign.FileDeassigner;
 import org.pickwicksoft.innovedu.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -198,29 +191,11 @@ public class ProjectResource {
     ) {
         log.debug("REST request to get a page of Projects");
         Page<Project> page;
-        List<Project> data;
         if (eagerload) {
-            data =
-                projectRepository
-                    .findAllWithEagerRelationships()
-                    .stream()
-                    .filter(project ->
-                        StringUtils.containsIgnoreCase(project.getTitle(), search) ||
-                        StringUtils.containsIgnoreCase(project.getDescription(), search)
-                    )
-                    .collect(Collectors.toList());
+            page = projectRepository.findAllByTitleOrDescriptionContainingIgnoreCaseWithEagerRelationships(search, pageable);
         } else {
-            data =
-                projectRepository
-                    .findAll()
-                    .stream()
-                    .filter(project ->
-                        StringUtils.containsIgnoreCase(project.getTitle(), search) ||
-                        StringUtils.containsIgnoreCase(project.getDescription(), search)
-                    )
-                    .collect(Collectors.toList());
+            page = projectRepository.findAllByTitleOrDescriptionContainingIgnoreCase(search, pageable);
         }
-        page = new PageImpl<>(data, pageable, data.size());
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

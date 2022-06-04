@@ -41,6 +41,17 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     @Query("select distinct project from Project project left join fetch project.user left join fetch project.topic")
     List<Project> findAllWithToOneRelationships();
 
+    @Query(
+        "select p from Project p where upper(p.title) like upper(concat('%', :text, '%')) or upper(p.description) like upper(concat('%', :text, '%'))"
+    )
+    Page<Project> findAllByTitleOrDescriptionContainingIgnoreCase(@Param("text") String text, Pageable pageable);
+
+    @Query(
+        value = "select distinct p from Project p left join fetch p.user left join fetch p.topic where upper(p.title) like upper(concat('%', :text, '%')) or upper(p.description) like upper(concat('%', :text, '%'))",
+        countQuery = "select count(distinct project) from Project project"
+    )
+    Page<Project> findAllByTitleOrDescriptionContainingIgnoreCaseWithEagerRelationships(@Param("text") String text, Pageable pageable);
+
     @Query("select project from Project project left join fetch project.user left join fetch project.topic where project.id =:id")
     Optional<Project> findOneWithToOneRelationships(@Param("id") Long id);
 
