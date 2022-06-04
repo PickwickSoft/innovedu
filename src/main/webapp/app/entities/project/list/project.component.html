@@ -8,7 +8,7 @@
 
     <mat-form-field class="w-96 max-w-full" [hidden]="initialSize === 0">
       <mat-placeholder jhiTranslate="innoveduApp.project.home.search">Search in all projects</mat-placeholder>
-      <input matInput type="search" [(ngModel)]="value" (keyup)="onFilterTextChanged($event)" />
+      <input matInput type="search" autocomplete="off" [(ngModel)]="value" (keyup)="onFilterTextChanged($event)" />
       <button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value = ''; reset()">
         <mat-icon>close</mat-icon>
       </button>
