@@ -5,8 +5,10 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import org.apache.commons.lang3.StringUtils;
 import org.pickwicksoft.innovedu.domain.Project;
 import org.pickwicksoft.innovedu.domain.User;
 import org.pickwicksoft.innovedu.repository.FileRepository;
@@ -21,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -184,20 +187,40 @@ public class ProjectResource {
      *
      * @param pageable the pagination information.
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
+     * @param search the search string to search for in title and descriptions
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of projects in body.
      */
     @GetMapping("/projects")
     public ResponseEntity<List<Project>> getAllProjects(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
-        @RequestParam(required = false, defaultValue = "true") boolean eagerload
+        @RequestParam(required = false, defaultValue = "true") boolean eagerload,
+        @RequestParam(required = false, defaultValue = "") String search
     ) {
         log.debug("REST request to get a page of Projects");
         Page<Project> page;
+        List<Project> data;
         if (eagerload) {
-            page = projectRepository.findAllWithEagerRelationships(pageable);
+            data =
+                projectRepository
+                    .findAllWithEagerRelationships()
+                    .stream()
+                    .filter(project ->
+                        StringUtils.containsIgnoreCase(project.getTitle(), search) ||
+                        StringUtils.containsIgnoreCase(project.getDescription(), search)
+                    )
+                    .collect(Collectors.toList());
         } else {
-            page = projectRepository.findAll(pageable);
+            data =
+                projectRepository
+                    .findAll()
+                    .stream()
+                    .filter(project ->
+                        StringUtils.containsIgnoreCase(project.getTitle(), search) ||
+                        StringUtils.containsIgnoreCase(project.getDescription(), search)
+                    )
+                    .collect(Collectors.toList());
         }
+        page = new PageImpl<>(data, pageable, data.size());
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
