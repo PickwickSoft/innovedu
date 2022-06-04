@@ -16,6 +16,7 @@ import { ParseLinks } from 'app/core/util/parse-links.service';
 })
 export class ProjectComponent implements OnInit {
   projects: IProject[];
+  initialSize: number;
   isLoading = false;
   itemsPerPage: number;
   links: { [key: string]: number };
@@ -26,6 +27,7 @@ export class ProjectComponent implements OnInit {
 
   constructor(protected projectService: ProjectService, protected modalService: NgbModal, protected parseLinks: ParseLinks) {
     this.projects = [];
+    this.initialSize = -1;
     this.itemsPerPage = ITEMS_PER_PAGE;
     this.page = 0;
     this.links = {
@@ -33,6 +35,7 @@ export class ProjectComponent implements OnInit {
     };
     this.predicate = 'id';
     this.ascending = true;
+    this.value = '';
   }
 
   loadAll(): void {
@@ -43,6 +46,7 @@ export class ProjectComponent implements OnInit {
         page: this.page,
         size: this.itemsPerPage,
         sort: this.sort(),
+        search: this.value,
       })
       .subscribe({
         next: (res: HttpResponse<IProject[]>) => {
@@ -85,6 +89,11 @@ export class ProjectComponent implements OnInit {
     });
   }
 
+  onFilterTextChanged(e: Event): void {
+    this.value = (e.target as HTMLInputElement).value;
+    this.reset();
+  }
+
   protected sort(): string[] {
     const result = [this.predicate + ',' + (this.ascending ? ASC : DESC)];
     if (this.predicate !== 'id') {
@@ -106,6 +115,9 @@ export class ProjectComponent implements OnInit {
       for (const d of data) {
         this.projects.push(d);
       }
+    }
+    if (this.initialSize === -1) {
+      this.initialSize = this.projects.length;
     }
   }
 }
