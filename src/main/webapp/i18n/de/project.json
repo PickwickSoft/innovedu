@@ -25,7 +25,8 @@
       "approved": "Approved",
       "date": "Datum",
       "user": "User",
-      "topic": "Thema"
+      "topic": "Thema",
+      "none": "Nix da!"
     }
   }
 }

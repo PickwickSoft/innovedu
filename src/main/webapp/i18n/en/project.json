@@ -25,7 +25,8 @@
       "approved": "Approved",
       "date": "Date",
       "user": "User",
-      "topic": "Topic"
+      "topic": "Topic",
+      "none": "None"
     }
   }
 }
