@@ -6,10 +6,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        card: '#A8C7A7',
-        theme: '#447B43',
+        card: 'var(--card)',
+        theme: 'var(--theme)',
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/line-clamp'),
+    // ...
+  ],
 };
