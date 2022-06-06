@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
@@ -24,11 +24,13 @@ export class ProjectUpdateComponent implements OnInit {
   usersSharedCollection: IUser[] = [];
   topicsSharedCollection: ITopic[] = [];
 
+  topicControl = new FormControl();
+
   editForm = this.fb.group({
     id: [],
     title: [null, [Validators.required, Validators.minLength(3)]],
     description: [null, [Validators.required, Validators.minLength(3)]],
-    topic: [],
+    topic: this.topicControl,
   });
 
   constructor(
@@ -125,7 +127,7 @@ export class ProjectUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       title: this.editForm.get(['title'])!.value,
       description: this.editForm.get(['description'])!.value,
-      topic: this.editForm.get(['topic'])!.value,
+      topic: this.topicsSharedCollection.find(topic => topic.id?.toString() === this.topicControl.value?.toString()),
     };
   }
 }
