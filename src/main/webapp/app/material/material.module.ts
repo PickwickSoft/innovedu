@@ -8,6 +8,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   exports: [
@@ -19,6 +21,9 @@ import { MatSelectModule } from '@angular/material/select';
     MatInputModule,
     MatSlideToggleModule,
     MatSelectModule,
+    MatTableModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
 })
 export class MaterialModule {}
