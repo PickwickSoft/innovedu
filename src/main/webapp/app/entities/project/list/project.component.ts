@@ -8,6 +8,7 @@ import { ASC, DESC, ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { ProjectService } from '../service/project.service';
 import { ProjectDeleteDialogComponent } from '../delete/project-delete-dialog.component';
 import { ParseLinks } from 'app/core/util/parse-links.service';
+import { debounceTime, Subject } from 'rxjs';
 
 @Component({
   selector: 'jhi-project',
@@ -24,6 +25,7 @@ export class ProjectComponent implements OnInit {
   predicate: string;
   ascending: boolean;
   value: any;
+  debounceSearch: Subject<any> = new Subject<any>();
 
   constructor(protected projectService: ProjectService, protected modalService: NgbModal, protected parseLinks: ParseLinks) {
     this.projects = [];
@@ -71,6 +73,9 @@ export class ProjectComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.debounceSearch.pipe(debounceTime(500)).subscribe(() => {
+      this.reset();
+    });
     this.loadAll();
   }
 
