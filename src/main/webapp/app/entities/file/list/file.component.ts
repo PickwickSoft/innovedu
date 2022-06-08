@@ -17,6 +17,7 @@ export class FileComponent implements OnInit {
   isLoading = false;
   dataSource?: MatTableDataSource<IFile>;
   displayedColumns = ['id', 'data', 'name', 'project', 'actions'];
+  value: any;
 
   constructor(protected fileService: FileService, protected dataUtils: DataUtils, protected modalService: NgbModal) {}
 
@@ -62,8 +63,7 @@ export class FileComponent implements OnInit {
     });
   }
 
-  applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource!.filter = filterValue.trim().toLowerCase();
+  filter(): void {
+    this.dataSource!.filter = this.value.trim().toLowerCase();
   }
 }

@@ -30,9 +30,12 @@
     <span jhiTranslate="innoveduApp.file.home.notFound">No files found</span>
   </div>
 
-  <mat-form-field [hidden]="!dataSource">
+  <mat-form-field class="search" [hidden]="!dataSource">
     <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Readme" #input />
+    <input matInput autocomplete="off" [(ngModel)]="value" (keyup)="filter()" placeholder="Ex. Readme" #input />
+    <button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value = ''; filter()">
+      <mat-icon>close</mat-icon>
+    </button>
   </mat-form-field>
 
   <div id="entities" *ngIf="dataSource && files && files.length > 0">

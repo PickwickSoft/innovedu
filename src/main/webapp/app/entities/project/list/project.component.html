@@ -6,7 +6,7 @@
       erat, sed diam voluptua.
     </p>
 
-    <mat-form-field class="w-96 max-w-full" [hidden]="initialSize === 0">
+    <mat-form-field class="search" [hidden]="initialSize === 0">
       <mat-placeholder jhiTranslate="innoveduApp.project.home.search">Search in all projects</mat-placeholder>
       <input matInput type="search" autocomplete="off" [(ngModel)]="value" (keyup)="debounceSearch.next($any($event.target).value)" />
       <button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value = ''; reset()">
