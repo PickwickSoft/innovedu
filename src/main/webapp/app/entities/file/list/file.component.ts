@@ -6,6 +6,7 @@ import { IFile } from '../file.model';
 import { FileService } from '../service/file.service';
 import { FileDeleteDialogComponent } from '../delete/file-delete-dialog.component';
 import { DataUtils } from 'app/core/util/data-util.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'jhi-file',
@@ -14,16 +15,19 @@ import { DataUtils } from 'app/core/util/data-util.service';
 export class FileComponent implements OnInit {
   files?: IFile[];
   isLoading = false;
+  dataSource?: MatTableDataSource<IFile>;
+  displayedColumns = ['id', 'data', 'name', 'project', 'actions'];
 
   constructor(protected fileService: FileService, protected dataUtils: DataUtils, protected modalService: NgbModal) {}
 
   loadAll(): void {
     this.isLoading = true;
 
-    this.fileService.query().subscribe({
+    this.fileService.queryAllOfCurrentUser().subscribe({
       next: (res: HttpResponse<IFile[]>) => {
         this.isLoading = false;
         this.files = res.body ?? [];
+        this.dataSource = new MatTableDataSource<IFile>(res.body != null ? res.body : []);
       },
       error: () => {
         this.isLoading = false;
@@ -56,5 +60,10 @@ export class FileComponent implements OnInit {
         this.loadAll();
       }
     });
+  }
+
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource!.filter = filterValue.trim().toLowerCase();
   }
 }
