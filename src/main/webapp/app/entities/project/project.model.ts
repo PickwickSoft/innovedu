@@ -3,7 +3,7 @@ import { IUser } from 'app/entities/user/user.model';
 import { ITopic } from 'app/entities/topic/topic.model';
 
 export interface IProject {
-  id?: number;
+  id?: string;
   title?: string;
   description?: string;
   stars?: number | null;
@@ -15,7 +15,7 @@ export interface IProject {
 
 export class Project implements IProject {
   constructor(
-    public id?: number,
+    public id?: string,
     public title?: string,
     public description?: string,
     public stars?: number | null,
@@ -28,6 +28,6 @@ export class Project implements IProject {
   }
 }
 
-export function getProjectIdentifier(project: IProject): number | undefined {
+export function getProjectIdentifier(project: IProject): string | undefined {
   return project.id;
 }

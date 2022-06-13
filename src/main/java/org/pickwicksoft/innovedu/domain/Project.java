@@ -2,6 +2,7 @@ package org.pickwicksoft.innovedu.domain;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -19,10 +20,9 @@ public class Project implements Serializable, UserAssignable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
     @Column(name = "id")
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
     @NotNull
     @Size(min = 3)
@@ -52,16 +52,16 @@ public class Project implements Serializable, UserAssignable {
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
-    public Long getId() {
+    public UUID getId() {
         return this.id;
     }
 
-    public Project id(Long id) {
+    public Project id(UUID id) {
         this.setId(id);
         return this;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

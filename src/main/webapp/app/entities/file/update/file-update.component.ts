@@ -76,7 +76,7 @@ export class FileUpdateComponent implements OnInit {
     }
   }
 
-  trackProjectById(_index: number, item: IProject): number {
+  trackProjectById(_index: number, item: IProject): string {
     return item.id!;
   }
 

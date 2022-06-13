@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.pickwicksoft.innovedu.domain.Project;
@@ -95,7 +96,7 @@ public class ProjectResource {
      */
     @PutMapping("/projects/{id}")
     public ResponseEntity<Project> updateProject(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(value = "id", required = false) final UUID id,
         @Valid @RequestBody Project project
     ) throws URISyntaxException {
         log.debug("REST request to update Project : {}, {}", id, project);
@@ -131,7 +132,7 @@ public class ProjectResource {
      */
     @PatchMapping(value = "/projects/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Project> partialUpdateProject(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(value = "id", required = false) final UUID id,
         @NotNull @RequestBody Project project
     ) throws URISyntaxException {
         log.debug("REST request to partial update Project partially : {}, {}", id, project);
@@ -230,7 +231,7 @@ public class ProjectResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the project, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/projects/{id}")
-    public ResponseEntity<Project> getProject(@PathVariable Long id) {
+    public ResponseEntity<Project> getProject(@PathVariable UUID id) {
         log.debug("REST request to get Project : {}", id);
         Optional<Project> project = projectRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(project);
@@ -243,7 +244,7 @@ public class ProjectResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/projects/{id}")
-    public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteProject(@PathVariable UUID id) {
         log.debug("REST request to delete Project : {}", id);
         fileDeassigner.deassignFilesByProjectId(id);
         projectRepository.deleteById(id);

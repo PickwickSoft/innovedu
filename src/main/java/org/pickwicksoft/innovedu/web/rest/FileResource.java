@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.pickwicksoft.innovedu.domain.File;
@@ -158,10 +159,10 @@ public class FileResource {
     @GetMapping("/files")
     public List<File> getAllFiles(
         @RequestParam(required = false, defaultValue = "false") boolean eagerload,
-        @RequestParam(required = false, defaultValue = "-1") Long projectId
+        @RequestParam(required = false, defaultValue = "null") UUID projectId
     ) {
         log.debug("REST request to get all Files");
-        if (projectId != -1) {
+        if (projectId != null) {
             return fileRepository.findAllWithToOneRelationshipsForProject(projectId);
         }
         return fileRepository.findAllWithEagerRelationships();

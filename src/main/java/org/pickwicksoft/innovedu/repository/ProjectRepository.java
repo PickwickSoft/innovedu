@@ -2,6 +2,7 @@ package org.pickwicksoft.innovedu.repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import org.pickwicksoft.innovedu.domain.Project;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,14 +14,14 @@ import org.springframework.stereotype.Repository;
  * Spring Data SQL repository for the Project entity.
  */
 @Repository
-public interface ProjectRepository extends JpaRepository<Project, Long> {
+public interface ProjectRepository extends JpaRepository<Project, UUID> {
     @Query("select project from Project project where project.user.login = ?#{principal.preferredUsername}")
     List<Project> findByUserIsCurrentUser();
 
     @Query("select project from Project project where project.user.login = ?#{principal.preferredUsername}")
     Page<Project> findByUserIsCurrentUserPageable(Pageable pageable);
 
-    default Optional<Project> findOneWithEagerRelationships(Long id) {
+    default Optional<Project> findOneWithEagerRelationships(UUID id) {
         return this.findOneWithToOneRelationships(id);
     }
 
@@ -53,7 +54,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     Page<Project> findAllByTitleOrDescriptionContainingIgnoreCaseWithEagerRelationships(@Param("text") String text, Pageable pageable);
 
     @Query("select project from Project project left join fetch project.user left join fetch project.topic where project.id =:id")
-    Optional<Project> findOneWithToOneRelationships(@Param("id") Long id);
+    Optional<Project> findOneWithToOneRelationships(@Param("id") UUID id);
 
     @Query(
         value = "select distinct project from Project project left join fetch project.user left join fetch project.topic where project.user.login = ?#{principal.preferredUsername}",

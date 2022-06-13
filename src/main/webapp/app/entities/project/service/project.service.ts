@@ -29,14 +29,14 @@ export class ProjectService {
   update(project: IProject): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(project);
     return this.http
-      .put<IProject>(`${this.resourceUrl}/${getProjectIdentifier(project) as number}`, copy, { observe: 'response' })
+      .put<IProject>(`${this.resourceUrl}/${getProjectIdentifier(project) as string}`, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   partialUpdate(project: IProject): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(project);
     return this.http
-      .patch<IProject>(`${this.resourceUrl}/${getProjectIdentifier(project) as number}`, copy, { observe: 'response' })
+      .patch<IProject>(`${this.resourceUrl}/${getProjectIdentifier(project) as string}`, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
@@ -60,7 +60,7 @@ export class ProjectService {
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
-  delete(id: number): Observable<HttpResponse<{}>> {
+  delete(id: string): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 

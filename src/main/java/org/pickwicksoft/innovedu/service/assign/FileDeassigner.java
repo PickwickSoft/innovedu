@@ -1,6 +1,7 @@
 package org.pickwicksoft.innovedu.service.assign;
 
 import java.util.List;
+import java.util.UUID;
 import org.pickwicksoft.innovedu.domain.File;
 import org.pickwicksoft.innovedu.repository.FileRepository;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ public class FileDeassigner {
         this.fileRepository = fileRepository;
     }
 
-    public void deassignFilesByProjectId(Long projectId) {
+    public void deassignFilesByProjectId(UUID projectId) {
         List<File> files = fileRepository.findAllWithToOneRelationshipsForProject(projectId);
         for (File file : files) {
             file.setProject(null);

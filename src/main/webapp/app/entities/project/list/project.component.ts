@@ -79,7 +79,7 @@ export class ProjectComponent implements OnInit {
     this.loadAll();
   }
 
-  trackId(_index: number, item: IProject): number {
+  trackId(_index: number, item: IProject): string {
     return item.id!;
   }
 
