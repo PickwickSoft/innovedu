@@ -24,9 +24,12 @@
       "stars": "Sterne",
       "approved": "Approved",
       "date": "Datum",
-      "user": "User",
+      "user": "Nutzer",
       "topic": "Thema",
-      "none": "Nix da!"
+      "none": "Nix da!",
+      "qr": "QR Code für dieses Projekt",
+      "qr-download": "Lade QR Code herunter",
+      "qr-open": "Öffne QR Code"
     }
   }
 }

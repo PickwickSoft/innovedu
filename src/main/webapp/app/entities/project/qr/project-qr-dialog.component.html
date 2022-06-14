@@ -1,0 +1,18 @@
+<div class="modal-header">
+  <h4 class="modal-title" jhiTranslate="innoveduApp.project.qr">QR Code for this project</h4>
+
+  <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="cancel()">&times;</button>
+</div>
+<div class="">
+  <div>
+    <qrcode (qrCodeURL)="onChangeURL($event)" [qrdata]="getURLForProject(project!)" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+  </div>
+  <div>
+    <a [href]="qrCodeDownloadLink" download="qrcode">
+      <button mat-button>
+        <fa-icon class="pr-0.5" icon="download"></fa-icon>
+        <span jhiTranslate="innoveduApp.project.qr-download">Download QR Code</span>
+      </button>
+    </a>
+  </div>
+</div>

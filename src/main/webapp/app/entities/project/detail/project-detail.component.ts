@@ -8,6 +8,8 @@ import { FileService } from 'app/entities/file/service/file.service';
 import { IFile } from '../../file/file.model';
 import { DataUtils } from '../../../core/util/data-util.service';
 import { mimeTypes } from 'mime-wrapper';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProjectQrDialogComponent } from '../qr/project-qr-dialog.component';
 
 @Component({
   selector: 'jhi-project-detail',
@@ -22,7 +24,8 @@ export class ProjectDetailComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     private accountService: AccountService,
     protected fileService: FileService,
-    protected dataUtils: DataUtils
+    protected dataUtils: DataUtils,
+    protected modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -50,5 +53,10 @@ export class ProjectDetailComponent implements OnInit {
       return '';
     }
     return mimeTypes.getExtension(type);
+  }
+
+  openQRCode(project: IProject): void {
+    const modalRef = this.modalService.open(ProjectQrDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.project = project;
   }
 }

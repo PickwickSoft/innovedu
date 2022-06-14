@@ -26,7 +26,10 @@
       "date": "Date",
       "user": "User",
       "topic": "Topic",
-      "none": "None"
+      "none": "None",
+      "qr": "QR Code for this project",
+      "qr-download": "Download QR Code",
+      "qr-open": "Open QR Code"
     }
   }
 }

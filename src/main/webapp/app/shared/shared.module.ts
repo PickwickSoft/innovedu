@@ -13,9 +13,10 @@ import { SortByDirective } from './sort/sort-by.directive';
 import { SortDirective } from './sort/sort.directive';
 import { ItemCountComponent } from './pagination/item-count.component';
 import { MaterialModule } from '../material/material.module';
+import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
-  imports: [SharedLibsModule, MaterialModule],
+  imports: [SharedLibsModule, MaterialModule, QRCodeModule],
   declarations: [
     FindLanguageFromKeyPipe,
     TranslateDirective,
@@ -43,6 +44,7 @@ import { MaterialModule } from '../material/material.module';
     SortDirective,
     ItemCountComponent,
     MaterialModule,
+    QRCodeModule,
   ],
 })
 export class SharedModule {}

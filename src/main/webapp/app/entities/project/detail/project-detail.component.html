@@ -37,9 +37,14 @@
       </button>
 
       <button mat-button class="pb-6">
-        <fa-icon class="text-yellow-400 pr-2" icon="star"></fa-icon>
+        <fa-icon class="text-yellow-400 pr-0.5" icon="star"></fa-icon>
         <span>{{ project.stars }}</span>
         <span jhiTranslate="innoveduApp.project.stars">Stars</span>
+      </button>
+
+      <button mat-button type="submit" (click)="openQRCode(project)" class="pb-6">
+        <fa-icon class="pr-0.5" icon="qrcode"></fa-icon>
+        <span jhiTranslate="innoveduApp.project.qr-open">Open QR Code</span>
       </button>
 
       <button mat-raised-button color="primary" type="button" [routerLink]="['/project', project.id, 'edit']" class="">
