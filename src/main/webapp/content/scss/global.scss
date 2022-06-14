@@ -72,6 +72,10 @@ Generic styles
   border: none;
 }
 
+.centered {
+  @apply mr-auto ml-auto;
+}
+
 .padded {
   padding: 1.5%;
 }
