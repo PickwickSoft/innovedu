@@ -211,14 +211,15 @@ public class ProjectResource {
     @GetMapping("/projects/user")
     public ResponseEntity<List<Project>> getAllProjectsOfUser(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
-        @RequestParam(required = false, defaultValue = "true") boolean eagerload
+        @RequestParam(required = false, defaultValue = "true") boolean eagerload,
+        @RequestParam(required = false, defaultValue = "") String search
     ) {
         log.debug("REST request to get a page of Projects from current user");
         Page<Project> page;
         if (eagerload) {
-            page = projectRepository.findAllWithEagerRelationshipsOfCurrentUser(pageable);
+            page = projectRepository.findAllWithEagerRelationshipsOfCurrentUser(search, pageable);
         } else {
-            page = projectRepository.findByUserIsCurrentUserPageable(pageable);
+            page = projectRepository.findByUserIsCurrentUserPageable(search, pageable);
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
