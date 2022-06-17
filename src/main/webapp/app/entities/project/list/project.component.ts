@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -9,6 +9,8 @@ import { ProjectService } from '../service/project.service';
 import { ProjectDeleteDialogComponent } from '../delete/project-delete-dialog.component';
 import { ParseLinks } from 'app/core/util/parse-links.service';
 import { debounceTime, Subject } from 'rxjs';
+import { Account } from '../../../core/auth/account.model';
+import { AccountService } from '../../../core/auth/account.service';
 
 @Component({
   selector: 'jhi-project',
@@ -17,6 +19,7 @@ import { debounceTime, Subject } from 'rxjs';
 })
 export class ProjectComponent implements OnInit {
   projects: IProject[];
+  userProjects: IProject[];
   initialSize: number;
   isLoading = false;
   itemsPerPage: number;
@@ -26,9 +29,17 @@ export class ProjectComponent implements OnInit {
   ascending: boolean;
   value: any;
   debounceSearch: Subject<any> = new Subject<any>();
+  account: Account | null = null;
+  publicView: TemplateRef<any> | null = null;
 
-  constructor(protected projectService: ProjectService, protected modalService: NgbModal, protected parseLinks: ParseLinks) {
+  constructor(
+    protected projectService: ProjectService,
+    protected modalService: NgbModal,
+    protected parseLinks: ParseLinks,
+    private accountService: AccountService
+  ) {
     this.projects = [];
+    this.userProjects = [];
     this.initialSize = -1;
     this.itemsPerPage = ITEMS_PER_PAGE;
     this.page = 0;
@@ -61,10 +72,32 @@ export class ProjectComponent implements OnInit {
       });
   }
 
+  loadAllOfUser(): void {
+    this.isLoading = true;
+
+    this.projectService
+      .queryOfUser({
+        size: this.itemsPerPage,
+        sort: this.sort(),
+        search: this.value,
+      })
+      .subscribe({
+        next: (res: HttpResponse<IProject[]>) => {
+          this.isLoading = false;
+          this.userProjects = res.body != null ? res.body : [];
+        },
+        error: () => {
+          this.isLoading = false;
+        },
+      });
+  }
+
   reset(): void {
     this.page = 0;
     this.projects = [];
+    this.userProjects = [];
     this.loadAll();
+    this.loadAllOfUser();
   }
 
   loadPage(page: number): void {
@@ -77,6 +110,8 @@ export class ProjectComponent implements OnInit {
       this.reset();
     });
     this.loadAll();
+    this.loadAllOfUser();
+    this.accountService.identity().subscribe(account => (this.account = account));
   }
 
   trackId(_index: number, item: IProject): string {
@@ -92,11 +127,6 @@ export class ProjectComponent implements OnInit {
         this.reset();
       }
     });
-  }
-
-  onFilterTextChanged(e: Event): void {
-    this.value = (e.target as HTMLInputElement).value;
-    this.reset();
   }
 
   protected sort(): string[] {

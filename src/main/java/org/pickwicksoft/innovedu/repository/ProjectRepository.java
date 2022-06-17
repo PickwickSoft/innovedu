@@ -21,7 +21,7 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
     @Query(
         "select project from Project project where project.user.login = ?#{principal.preferredUsername} and (upper(project.title) like upper(concat('%', :text, '%')) or upper(project.description) like upper(concat('%', :text, '%')))"
     )
-    Page<Project> findByUserIsCurrentUserPageable(@Param("text") String text, Pageable pageable);
+    List<Project> findByUserIsCurrentUserPageable(@Param("text") String text);
 
     default Optional<Project> findOneWithEagerRelationships(UUID id) {
         return this.findOneWithToOneRelationships(id);
@@ -62,5 +62,5 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
         value = "select distinct project from Project project left join fetch project.user left join fetch project.topic where project.user.login = ?#{principal.preferredUsername} and (upper(project.title) like upper(concat('%', :text, '%')) or upper(project.description) like upper(concat('%', :text, '%')))",
         countQuery = "select count(distinct project) from Project project"
     )
-    Page<Project> findAllWithEagerRelationshipsOfCurrentUser(@Param("text") String text, Pageable pageable);
+    List<Project> findAllWithEagerRelationshipsOfCurrentUser(@Param("text") String text);
 }

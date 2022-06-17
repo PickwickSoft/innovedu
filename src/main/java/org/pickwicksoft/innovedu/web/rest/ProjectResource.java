@@ -204,25 +204,22 @@ public class ProjectResource {
     /**
      * {@code GET  /projects/user} : get all the projects of current user.
      *
-     * @param pageable the pagination information.
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of projects in body.
      */
     @GetMapping("/projects/user")
     public ResponseEntity<List<Project>> getAllProjectsOfUser(
-        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
         @RequestParam(required = false, defaultValue = "true") boolean eagerload,
         @RequestParam(required = false, defaultValue = "") String search
     ) {
         log.debug("REST request to get a page of Projects from current user");
-        Page<Project> page;
+        List<Project> projects;
         if (eagerload) {
-            page = projectRepository.findAllWithEagerRelationshipsOfCurrentUser(search, pageable);
+            projects = projectRepository.findAllWithEagerRelationshipsOfCurrentUser(search);
         } else {
-            page = projectRepository.findByUserIsCurrentUserPageable(search, pageable);
+            projects = projectRepository.findByUserIsCurrentUserPageable(search);
         }
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        return ResponseEntity.ok().body(projects);
     }
 
     /**
