@@ -212,12 +212,33 @@ public class ProjectResource {
         @RequestParam(required = false, defaultValue = "true") boolean eagerload,
         @RequestParam(required = false, defaultValue = "") String search
     ) {
-        log.debug("REST request to get a page of Projects from current user");
+        log.debug("REST request to get all Projects from current user");
         List<Project> projects;
         if (eagerload) {
             projects = projectRepository.findAllWithEagerRelationshipsOfCurrentUser(search);
         } else {
             projects = projectRepository.findByUserIsCurrentUserPageable(search);
+        }
+        return ResponseEntity.ok().body(projects);
+    }
+
+    /**
+     * {@code GET  /projects/user} : get a page of projects except current user.
+     *
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of projects in body.
+     */
+    @GetMapping("/projects/excludeUser")
+    public ResponseEntity<List<Project>> getAllProjectsExceptOfUser(
+        @RequestParam(required = false, defaultValue = "true") boolean eagerload,
+        @RequestParam(required = false, defaultValue = "") String search
+    ) {
+        log.debug("REST request to get a page of Projects except from current user");
+        List<Project> projects;
+        if (eagerload) {
+            projects = projectRepository.findAllWithEagerRelationshipsExceptCurrentUser(search);
+        } else {
+            projects = projectRepository.findByUserIsNotCurrentUserPageable(search);
         }
         return ResponseEntity.ok().body(projects);
     }

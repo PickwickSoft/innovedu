@@ -72,6 +72,27 @@ export class ProjectComponent implements OnInit {
       });
   }
 
+  loadAllExcludeUser(): void {
+    this.isLoading = true;
+
+    this.projectService
+      .queryExcludeUser({
+        page: this.page,
+        size: this.itemsPerPage,
+        sort: this.sort(),
+        search: this.value,
+      })
+      .subscribe({
+        next: (res: HttpResponse<IProject[]>) => {
+          this.isLoading = false;
+          this.paginateProjects(res.body, res.headers);
+        },
+        error: () => {
+          this.isLoading = false;
+        },
+      });
+  }
+
   loadAllOfUser(): void {
     this.isLoading = true;
 
@@ -92,24 +113,32 @@ export class ProjectComponent implements OnInit {
       });
   }
 
+  load(): void {
+    if (this.account !== null) {
+      this.loadAllExcludeUser();
+    } else {
+      this.loadAll();
+    }
+  }
+
   reset(): void {
     this.page = 0;
     this.projects = [];
     this.userProjects = [];
-    this.loadAll();
+    this.load();
     this.loadAllOfUser();
   }
 
   loadPage(page: number): void {
     this.page = page;
-    this.loadAll();
+    this.load();
   }
 
   ngOnInit(): void {
     this.debounceSearch.pipe(debounceTime(500)).subscribe(() => {
       this.reset();
     });
-    this.loadAll();
+    this.load();
     this.loadAllOfUser();
     this.accountService.identity().subscribe(account => (this.account = account));
   }

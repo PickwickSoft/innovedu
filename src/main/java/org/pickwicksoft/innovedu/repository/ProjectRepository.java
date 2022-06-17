@@ -63,4 +63,15 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
         countQuery = "select count(distinct project) from Project project"
     )
     List<Project> findAllWithEagerRelationshipsOfCurrentUser(@Param("text") String text);
+
+    @Query(
+        value = "select distinct project from Project project left join fetch project.user left join fetch project.topic where project.user.login <> ?#{principal.preferredUsername} and (upper(project.title) like upper(concat('%', :text, '%')) or upper(project.description) like upper(concat('%', :text, '%')))",
+        countQuery = "select count(distinct project) from Project project"
+    )
+    List<Project> findAllWithEagerRelationshipsExceptCurrentUser(@Param("text") String text);
+
+    @Query(
+        "select project from Project project where project.user.login <> ?#{principal.preferredUsername} and (upper(project.title) like upper(concat('%', :text, '%')) or upper(project.description) like upper(concat('%', :text, '%')))"
+    )
+    List<Project> findByUserIsNotCurrentUserPageable(@Param("text") String text);
 }
