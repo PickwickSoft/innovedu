@@ -51,6 +51,8 @@ export class ProjectUpdateComponent implements OnInit {
       this.updateForm(project);
 
       this.loadRelationshipsOptions();
+
+      this.updateSelectedTopic(project);
     });
   }
 
@@ -129,5 +131,9 @@ export class ProjectUpdateComponent implements OnInit {
       description: this.editForm.get(['description'])!.value,
       topic: this.topicsSharedCollection.find(topic => topic.id?.toString() === this.topicControl.value?.toString()),
     };
+  }
+
+  private updateSelectedTopic(project: IProject): void {
+    this.editForm.get('topic')?.setValue(project.topic?.id);
   }
 }
