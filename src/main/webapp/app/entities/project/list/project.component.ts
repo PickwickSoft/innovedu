@@ -138,9 +138,9 @@ export class ProjectComponent implements OnInit {
     this.debounceSearch.pipe(debounceTime(500)).subscribe(() => {
       this.reset();
     });
+    this.accountService.identity().subscribe(account => (this.account = account));
     this.load();
     this.loadAllOfUser();
-    this.accountService.identity().subscribe(account => (this.account = account));
   }
 
   trackId(_index: number, item: IProject): string {
