@@ -32,7 +32,6 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="reset()">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="title"><span jhiTranslate="innoveduApp.project.title">Title</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="description">
             <span jhiTranslate="innoveduApp.project.description">Description</span> <fa-icon icon="sort"></fa-icon>
@@ -53,17 +52,12 @@
       </thead>
       <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
         <tr *ngFor="let project of projects; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/teacher/project', project.id, 'view']">{{ project.id }}</a>
-          </td>
           <td>{{ project.title }}</td>
           <td>{{ project.description }}</td>
           <td>{{ project.stars }}</td>
           <td>{{ project.approved }}</td>
           <td>{{ project.date | formatMediumDatetime }}</td>
-          <td>
-            {{ project.user?.login }}
-          </td>
+          <td>{{ project.user?.firstName }} {{ project.user?.lastName }}</td>
           <td>
             <div *ngIf="project.topic">
               <a [routerLink]="['/topic', project.topic?.id, 'view']">{{ project.topic?.title }}</a>
