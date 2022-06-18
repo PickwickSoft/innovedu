@@ -26,13 +26,16 @@
         "userManagement": "User management",
         "tracker": "User tracker",
         "metrics": "Metrics",
-        "projects": "Project administration",
         "health": "Health",
         "configuration": "Configuration",
         "logs": "Logs",
         "apidocs": "API",
         "database": "Database",
         "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+      },
+      "teacher": {
+        "main": "Teacher Functions",
+        "projects": "Project administration"
       },
       "language": "Language"
     },

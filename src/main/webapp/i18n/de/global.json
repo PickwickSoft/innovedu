@@ -26,13 +26,16 @@
         "userManagement": "Benutzerverwaltung",
         "tracker": "Benutzer Aktivitäten",
         "metrics": "Metriken",
-        "projects": "Projekt Verwaltung",
         "health": "Status",
         "configuration": "Konfiguration",
         "logs": "Protokoll",
         "apidocs": "API",
         "database": "Datenbank",
         "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+      },
+      "teacher": {
+        "main": "Lehrerfunktionen",
+        "projects": "Projekt Verwaltung"
       },
       "language": "Sprache"
     },

@@ -21,6 +21,14 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
           loadChildren: () => import('./admin/admin-routing.module').then(m => m.AdminRoutingModule),
         },
         {
+          path: 'teacher',
+          data: {
+            authorities: [Authority.TEACHER],
+          },
+          canActivate: [UserRouteAccessService],
+          loadChildren: () => import('./teacher/teacher-routing.module').then(m => m.TeacherRoutingModule),
+        },
+        {
           path: '',
           loadChildren: () => import(`./entities/entity-routing.module`).then(m => m.EntityRoutingModule),
         },

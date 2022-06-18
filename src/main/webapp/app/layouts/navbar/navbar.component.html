@@ -83,6 +83,30 @@
           </ul>
         </li>
         <li
+          *jhiHasAnyAuthority="'ROLE_TEACHER'"
+          ngbDropdown
+          class="nav-item dropdown pointer"
+          display="dynamic"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="teacher-menu">
+            <span>
+              <fa-icon icon="users-cog"></fa-icon>
+              <span jhiTranslate="global.menu.teacher.main">Teacher Functions</span>
+            </span>
+          </a>
+          <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="admin-menu">
+            <li>
+              <a class="dropdown-item" routerLink="teacher/project" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="screwdriver-wrench" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.teacher.projects">Projects Administration</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li
           *jhiHasAnyAuthority="'ROLE_ADMIN'"
           ngbDropdown
           class="nav-item dropdown pointer"
@@ -97,12 +121,6 @@
             </span>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="admin-menu">
-            <li>
-              <a class="dropdown-item" routerLink="admin/project" routerLinkActive="active" (click)="collapseNavbar()">
-                <fa-icon icon="screwdriver-wrench" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.admin.projects">Projects Administration</span>
-              </a>
-            </li>
             <li>
               <a class="dropdown-item" routerLink="admin/metrics" routerLinkActive="active" (click)="collapseNavbar()">
                 <fa-icon icon="tachometer-alt" [fixedWidth]="true"></fa-icon>
