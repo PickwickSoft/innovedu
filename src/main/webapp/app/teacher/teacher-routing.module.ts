@@ -10,6 +10,12 @@ import { RouterModule } from '@angular/router';
         path: 'project',
         loadChildren: () => import('./project/project.module').then(m => m.ProjectModule),
       },
+      {
+        path: 'topic',
+        data: { pageTitle: 'innoveduApp.topic.home.title' },
+        loadChildren: () => import('./topic/topic.module').then(m => m.TopicModule),
+      },
+
       /* jhipster-needle-add-admin-route - JHipster will add admin routes here */
     ]),
   ],

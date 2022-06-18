@@ -10,11 +10,6 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./project/project.module').then(m => m.ProjectModule),
       },
       {
-        path: 'topic',
-        data: { pageTitle: 'innoveduApp.topic.home.title' },
-        loadChildren: () => import('./topic/topic.module').then(m => m.TopicModule),
-      },
-      {
         path: 'file',
         data: { pageTitle: 'innoveduApp.file.home.title' },
         loadChildren: () => import('./file/file.module').then(m => m.FileModule),

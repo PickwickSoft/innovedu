@@ -11,8 +11,8 @@ import { IProject, Project } from '../project.model';
 
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
-import { ITopic } from 'app/entities/topic/topic.model';
-import { TopicService } from 'app/entities/topic/service/topic.service';
+import { ITopic } from 'app/teacher/topic/topic.model';
+import { TopicService } from 'app/teacher/topic/service/topic.service';
 
 import { ProjectUpdateComponent } from './project-update.component';
 

@@ -1,6 +1,6 @@
 import dayjs from 'dayjs/esm';
 import { IUser } from 'app/entities/user/user.model';
-import { ITopic } from 'app/entities/topic/topic.model';
+import { ITopic } from 'app/teacher/topic/topic.model';
 
 export interface IProject {
   id?: string;
