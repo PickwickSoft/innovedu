@@ -11,18 +11,16 @@ const projectRoute: Routes = [
   {
     path: '',
     component: ProjectComponent,
-    canActivate: [UserRouteAccessService],
   },
   {
-    path: ':id/view',
+    path: 'project/:id/view',
     component: ProjectDetailComponent,
     resolve: {
       project: ProjectRoutingResolveService,
     },
-    canActivate: [UserRouteAccessService],
   },
   {
-    path: 'new',
+    path: 'project/new',
     component: ProjectUpdateComponent,
     resolve: {
       project: ProjectRoutingResolveService,
@@ -30,7 +28,7 @@ const projectRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':id/edit',
+    path: 'project/:id/edit',
     component: ProjectUpdateComponent,
     resolve: {
       project: ProjectRoutingResolveService,

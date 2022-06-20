@@ -30,7 +30,6 @@ export class ProjectComponent implements OnInit {
   value: any;
   debounceSearch: Subject<any> = new Subject<any>();
   account: Account | null = null;
-  publicView: TemplateRef<any> | null = null;
 
   constructor(
     protected projectService: ProjectService,
@@ -115,6 +114,7 @@ export class ProjectComponent implements OnInit {
 
   load(): void {
     if (this.account !== null) {
+      this.loadAllOfUser();
       this.loadAllExcludeUser();
     } else {
       this.loadAll();
@@ -126,7 +126,6 @@ export class ProjectComponent implements OnInit {
     this.projects = [];
     this.userProjects = [];
     this.load();
-    this.loadAllOfUser();
   }
 
   loadPage(page: number): void {
@@ -135,12 +134,11 @@ export class ProjectComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.accountService.identity().subscribe(account => (this.account = account));
     this.debounceSearch.pipe(debounceTime(500)).subscribe(() => {
       this.reset();
     });
-    this.accountService.identity().subscribe(account => (this.account = account));
     this.load();
-    this.loadAllOfUser();
   }
 
   trackId(_index: number, item: IProject): string {

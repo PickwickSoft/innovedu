@@ -10,6 +10,7 @@ import { DataUtils } from '../../../core/util/data-util.service';
 import { mimeTypes } from 'mime-wrapper';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProjectQrDialogComponent } from '../qr/project-qr-dialog.component';
+import { ProjectDeleteDialogComponent } from '../../../teacher/project/delete/project-delete-dialog.component';
 
 @Component({
   selector: 'jhi-project-detail',
@@ -58,5 +59,16 @@ export class ProjectDetailComponent implements OnInit {
   openQRCode(project: IProject): void {
     const modalRef = this.modalService.open(ProjectQrDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.project = project;
+  }
+
+  delete(project: IProject): void {
+    const modalRef = this.modalService.open(ProjectDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.project = project;
+    // unsubscribe not needed because closed completes on modal close
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'deleted') {
+        this.previousState();
+      }
+    });
   }
 }
