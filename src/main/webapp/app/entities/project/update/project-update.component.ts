@@ -21,7 +21,6 @@ import { TopicService } from 'app/teacher/topic/service/topic.service';
 export class ProjectUpdateComponent implements OnInit {
   isSaving = false;
 
-  usersSharedCollection: IUser[] = [];
   topicsSharedCollection: ITopic[] = [];
 
   topicControl = new FormControl();
@@ -105,17 +104,10 @@ export class ProjectUpdateComponent implements OnInit {
       topic: project.topic,
     });
 
-    this.usersSharedCollection = this.userService.addUserToCollectionIfMissing(this.usersSharedCollection, project.user);
     this.topicsSharedCollection = this.topicService.addTopicToCollectionIfMissing(this.topicsSharedCollection, project.topic);
   }
 
   protected loadRelationshipsOptions(): void {
-    this.userService
-      .query()
-      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
-      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing(users, this.editForm.get('user')!.value)))
-      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
-
     this.topicService
       .query()
       .pipe(map((res: HttpResponse<ITopic[]>) => res.body ?? []))

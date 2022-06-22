@@ -64,10 +64,6 @@ describe('Project Management Update Component', () => {
 
       activatedRoute.data = of({ project });
       comp.ngOnInit();
-
-      expect(userService.query).toHaveBeenCalled();
-      expect(userService.addUserToCollectionIfMissing).toHaveBeenCalledWith(userCollection, ...additionalUsers);
-      expect(comp.usersSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call Topic query and add missing value', () => {

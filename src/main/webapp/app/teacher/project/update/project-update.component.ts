@@ -11,7 +11,6 @@ import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 import { IProject, Project } from '../project.model';
 import { ProjectService } from '../service/project.service';
 import { IUser } from 'app/entities/user/user.model';
-import { UserService } from 'app/entities/user/user.service';
 import { ITopic } from 'app/teacher/topic/topic.model';
 import { TopicService } from 'app/teacher/topic/service/topic.service';
 
@@ -22,7 +21,6 @@ import { TopicService } from 'app/teacher/topic/service/topic.service';
 export class ProjectUpdateComponent implements OnInit {
   isSaving = false;
 
-  usersSharedCollection: IUser[] = [];
   topicsSharedCollection: ITopic[] = [];
 
   editForm = this.fb.group({
@@ -38,7 +36,6 @@ export class ProjectUpdateComponent implements OnInit {
 
   constructor(
     protected projectService: ProjectService,
-    protected userService: UserService,
     protected topicService: TopicService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
@@ -110,17 +107,10 @@ export class ProjectUpdateComponent implements OnInit {
       topic: project.topic,
     });
 
-    this.usersSharedCollection = this.userService.addUserToCollectionIfMissing(this.usersSharedCollection, project.user);
     this.topicsSharedCollection = this.topicService.addTopicToCollectionIfMissing(this.topicsSharedCollection, project.topic);
   }
 
   protected loadRelationshipsOptions(): void {
-    this.userService
-      .query()
-      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
-      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing(users, this.editForm.get('user')!.value)))
-      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
-
     this.topicService
       .query()
       .pipe(map((res: HttpResponse<ITopic[]>) => res.body ?? []))
