@@ -13,6 +13,8 @@ import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
 import { ITopic } from 'app/teacher/topic/topic.model';
 import { TopicService } from 'app/teacher/topic/service/topic.service';
+import { AccountService } from '../../../core/auth/account.service';
+import { Account } from '../../../core/auth/account.model';
 
 @Component({
   selector: 'jhi-project-update',
@@ -32,9 +34,13 @@ export class ProjectUpdateComponent implements OnInit {
     topic: this.topicControl,
   });
 
+  account: Account | null = null;
+
+  project: IProject | null = null;
+
   constructor(
     protected projectService: ProjectService,
-    protected userService: UserService,
+    private accountService: AccountService,
     protected topicService: TopicService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
@@ -46,6 +52,9 @@ export class ProjectUpdateComponent implements OnInit {
         const today = dayjs().startOf('day');
         project.date = today;
       }
+      this.project = project;
+
+      this.accountService.identity().subscribe(account => (this.account = account));
 
       this.updateForm(project);
 

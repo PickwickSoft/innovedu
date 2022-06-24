@@ -29,7 +29,8 @@
       "none": "None",
       "qr": "QR Code for this project",
       "qr-download": "Download QR Code",
-      "qr-open": "Open QR Code"
+      "qr-open": "Open QR Code",
+      "notAllowed": "You are not allowed to edit this project"
     }
   }
 }

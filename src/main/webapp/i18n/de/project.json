@@ -29,7 +29,8 @@
       "none": "Nix da!",
       "qr": "QR Code für dieses Projekt",
       "qr-download": "Lade QR Code herunter",
-      "qr-open": "Öffne QR Code"
+      "qr-open": "Öffne QR Code",
+      "notAllowed": "Sie haben keine Berechtigung dieses Projekt zu bearbeiten"
     }
   }
 }
