@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Location } from '@angular/common';
 import { SafeUrl } from '@angular/platform-browser';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -12,16 +13,14 @@ export class ProjectQrDialogComponent {
   project?: IProject;
   public qrCodeDownloadLink: SafeUrl = '';
 
-  constructor(protected projectService: ProjectService, protected activeModal: NgbActiveModal) {}
+  constructor(protected projectService: ProjectService, protected activeModal: NgbActiveModal, private location: Location) {}
 
   cancel(): void {
     this.activeModal.dismiss();
   }
 
   getURLForProject(project: IProject): string {
-    // TODO: Generate QR URL with the application's DNS / Baseurl
-    const id = project.id!;
-    return `/project/${id}/view`;
+    return `${location.origin}/project/${project.id!}/view`;
   }
 
   onChangeURL(url: SafeUrl): void {
