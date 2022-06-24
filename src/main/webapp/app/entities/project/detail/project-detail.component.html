@@ -9,7 +9,7 @@
       <div class="flex flex-col sm:flex-row justify-center gap-x-6 gap-y-1 pb-6">
         <div *ngIf="project.topic && project.topic.title?.length !== 0">
           <span class="text-theme font-medium" jhiTranslate="innoveduApp.project.topic">Topic</span>
-          <a [routerLink]="['/teacher/topic', project.topic?.id, 'view']">{{ project.topic?.title }}</a>
+          <span>{{ project.topic?.title }}</span>
         </div>
         <div>
           <span class="text-theme font-medium" jhiTranslate="innoveduApp.project.date">Date</span>
@@ -46,15 +46,16 @@
         <fa-icon class="pr-0.5" icon="qrcode"></fa-icon>
         <span jhiTranslate="innoveduApp.project.qr-open">Open QR Code</span>
       </button>
+      <span *ngIf="account !== null && project.user?.login === account.login">
+        <button mat-button color="danger" type="submit" (click)="delete(project)" data-cy="entityDeleteButton">
+          <fa-icon icon="times"></fa-icon>
+          <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+        </button>
 
-      <button mat-button color="danger" type="submit" (click)="delete(project)" data-cy="entityDeleteButton" *ngIf="account !== null">
-        <fa-icon icon="times"></fa-icon>
-        <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-      </button>
-
-      <button mat-raised-button color="primary" type="button" [routerLink]="['/project', project.id, 'edit']" *ngIf="account !== null">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
-      </button>
+        <button mat-raised-button color="primary" type="button" [routerLink]="['/project', project.id, 'edit']">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </span>
     </div>
   </div>
 </div>
