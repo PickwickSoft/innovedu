@@ -11,8 +11,8 @@ import javax.validation.constraints.NotNull;
 import org.pickwicksoft.innovedu.domain.Project;
 import org.pickwicksoft.innovedu.repository.ProjectRepository;
 import org.pickwicksoft.innovedu.repository.UserRepository;
-import org.pickwicksoft.innovedu.service.assign.CurrentUserAssign;
 import org.pickwicksoft.innovedu.service.assign.FileDeassigner;
+import org.pickwicksoft.innovedu.service.assign.UserOperations;
 import org.pickwicksoft.innovedu.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -49,18 +50,18 @@ public class ProjectResource {
 
     private final FileDeassigner fileDeassigner;
 
-    private final CurrentUserAssign currentUserAssign;
+    private final UserOperations userOperations;
 
     public ProjectResource(
         ProjectRepository projectRepository,
         UserRepository userRepository,
         FileDeassigner fileDeassigner,
-        CurrentUserAssign currentUserAssign
+        UserOperations userOperations
     ) {
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
         this.fileDeassigner = fileDeassigner;
-        this.currentUserAssign = currentUserAssign;
+        this.userOperations = userOperations;
     }
 
     /**
@@ -76,7 +77,7 @@ public class ProjectResource {
         if (project.getId() != null) {
             throw new BadRequestAlertException("A new project cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        currentUserAssign.assignUser(project);
+        userOperations.assignUser(project);
         Project result = projectRepository.save(project);
         return ResponseEntity
             .created(new URI("/api/projects/" + result.getId()))
@@ -111,7 +112,7 @@ public class ProjectResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        currentUserAssign.assignUser(project);
+        userOperations.assignUser(project);
         Project result = projectRepository.save(project);
         return ResponseEntity
             .ok()
@@ -182,6 +183,7 @@ public class ProjectResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of projects in body.
      */
     @GetMapping("/projects")
+    @Transactional(propagation = Propagation.NEVER)
     public ResponseEntity<List<Project>> getAllProjects(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
         @RequestParam(required = false, defaultValue = "true") boolean eagerload,
@@ -194,6 +196,7 @@ public class ProjectResource {
         } else {
             page = projectRepository.findAllByTitleOrDescriptionContainingIgnoreCase(search, pageable);
         }
+        userOperations.hideUsersIfNecessary(page);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
