@@ -156,9 +156,6 @@ public class ProjectResource {
                 if (project.getDescription() != null) {
                     existingProject.setDescription(project.getDescription());
                 }
-                if (project.getStars() != null) {
-                    existingProject.setStars(project.getStars());
-                }
                 if (project.getApproved() != null) {
                     existingProject.setApproved(project.getApproved());
                 }

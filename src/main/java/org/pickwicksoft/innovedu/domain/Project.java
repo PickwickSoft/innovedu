@@ -34,9 +34,6 @@ public class Project implements Serializable, UserAssignable {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "stars")
-    private Integer stars = 0;
-
     @NotNull
     @Column(name = "approved", nullable = false)
     private Boolean approved = false;
@@ -89,19 +86,6 @@ public class Project implements Serializable, UserAssignable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Integer getStars() {
-        return this.stars;
-    }
-
-    public Project stars(Integer stars) {
-        this.setStars(stars);
-        return this;
-    }
-
-    public void setStars(Integer stars) {
-        this.stars = stars;
     }
 
     public Boolean getApproved() {
@@ -182,7 +166,6 @@ public class Project implements Serializable, UserAssignable {
             "id=" + getId() +
             ", title='" + getTitle() + "'" +
             ", description='" + getDescription() + "'" +
-            ", stars=" + getStars() +
             ", approved='" + getApproved() + "'" +
             ", date='" + getDate() + "'" +
             "}";

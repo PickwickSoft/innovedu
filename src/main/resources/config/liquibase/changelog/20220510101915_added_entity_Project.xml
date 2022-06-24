@@ -20,9 +20,6 @@
             <column name="description" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="stars" type="integer">
-                <constraints nullable="true" />
-            </column>
             <column name="approved" type="boolean">
                 <constraints nullable="false" />
             </column>
