@@ -202,6 +202,33 @@ public class ProjectResource {
     }
 
     /**
+     * {@code GET  /projects} : get all the projects.
+     *
+     * @param pageable the pagination information.
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
+     * @param search the search string to search for in title and descriptions
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of projects in body.
+     */
+    @GetMapping("/projects/approved")
+    @Transactional(propagation = Propagation.NEVER)
+    public ResponseEntity<List<Project>> getAllApprovedProjects(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(required = false, defaultValue = "true") boolean eagerload,
+        @RequestParam(required = false, defaultValue = "") String search
+    ) {
+        log.debug("REST request to get a page of Projects");
+        Page<Project> page;
+        if (eagerload) {
+            page = projectRepository.findAllByTitleOrDescriptionContainingIgnoreCaseAndApprovedWithEagerRelationships(search, pageable);
+        } else {
+            page = projectRepository.findAllByTitleOrDescriptionContainingIgnoreCaseAndAndApproved(search, pageable);
+        }
+        userOperations.hideUsersIfNecessary(page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
      * {@code GET  /projects/user} : get all the projects of current user.
      *
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).

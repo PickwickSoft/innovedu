@@ -54,7 +54,7 @@ export class ProjectComponent implements OnInit {
     this.isLoading = true;
 
     this.projectService
-      .query({
+      .queryApproved({
         page: this.page,
         size: this.itemsPerPage,
         sort: this.sort(),

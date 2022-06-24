@@ -17,6 +17,7 @@ export class ProjectService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/projects');
   protected userResourceUrl = this.applicationConfigService.getEndpointFor('api/projects/user');
   protected excludeUserResourceUrl = this.applicationConfigService.getEndpointFor('api/projects/excludeUser');
+  protected approvedResourceUrl = this.applicationConfigService.getEndpointFor('api/projects/approved');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -51,6 +52,13 @@ export class ProjectService {
     const options = createRequestOption(req);
     return this.http
       .get<IProject[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  queryApproved(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<IProject[]>(this.approvedResourceUrl, { params: options, observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 

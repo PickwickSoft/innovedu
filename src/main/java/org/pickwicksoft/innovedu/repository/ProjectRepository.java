@@ -50,10 +50,24 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
     Page<Project> findAllByTitleOrDescriptionContainingIgnoreCase(@Param("text") String text, Pageable pageable);
 
     @Query(
+        "select p from Project p where (upper(p.title) like upper(concat('%', :text, '%')) or upper(p.description) like upper(concat('%', :text, '%'))) and p.approved = true"
+    )
+    Page<Project> findAllByTitleOrDescriptionContainingIgnoreCaseAndAndApproved(@Param("text") String text, Pageable pageable);
+
+    @Query(
         value = "select distinct project from Project project left join fetch project.user left join fetch project.topic where upper(project.title) like upper(concat('%', :text, '%')) or upper(project.description) like upper(concat('%', :text, '%'))",
         countQuery = "select count(distinct project) from Project project"
     )
     Page<Project> findAllByTitleOrDescriptionContainingIgnoreCaseWithEagerRelationships(@Param("text") String text, Pageable pageable);
+
+    @Query(
+        value = "select distinct project from Project project left join fetch project.user left join fetch project.topic where (upper(project.title) like upper(concat('%', :text, '%')) or upper(project.description) like upper(concat('%', :text, '%'))) and project.approved = true",
+        countQuery = "select count(distinct project) from Project project"
+    )
+    Page<Project> findAllByTitleOrDescriptionContainingIgnoreCaseAndApprovedWithEagerRelationships(
+        @Param("text") String text,
+        Pageable pageable
+    );
 
     @Query("select project from Project project left join fetch project.user left join fetch project.topic where project.id =:id")
     Optional<Project> findOneWithToOneRelationships(@Param("id") UUID id);
@@ -65,13 +79,13 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
     List<Project> findAllWithEagerRelationshipsOfCurrentUser(@Param("text") String text);
 
     @Query(
-        value = "select distinct project from Project project left join fetch project.user left join fetch project.topic where project.user.login <> ?#{principal.preferredUsername} and (upper(project.title) like upper(concat('%', :text, '%')) or upper(project.description) like upper(concat('%', :text, '%')))",
+        value = "select distinct project from Project project left join fetch project.user left join fetch project.topic where project.user.login <> ?#{principal.preferredUsername} and (upper(project.title) like upper(concat('%', :text, '%')) or upper(project.description) like upper(concat('%', :text, '%'))) and project.approved = true",
         countQuery = "select count(distinct project) from Project project"
     )
     List<Project> findAllWithEagerRelationshipsExceptCurrentUser(@Param("text") String text);
 
     @Query(
-        "select project from Project project where project.user.login <> ?#{principal.preferredUsername} and (upper(project.title) like upper(concat('%', :text, '%')) or upper(project.description) like upper(concat('%', :text, '%')))"
+        "select project from Project project where project.user.login <> ?#{principal.preferredUsername} and (upper(project.title) like upper(concat('%', :text, '%')) or upper(project.description) like upper(concat('%', :text, '%'))) and project.approved = true"
     )
     List<Project> findByUserIsNotCurrentUserPageable(@Param("text") String text);
 }
