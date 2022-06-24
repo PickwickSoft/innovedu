@@ -30,6 +30,35 @@
       "groups": ["/Admins", "/Users"]
     },
     {
+      "id": "663ae3d6-d67d-4bdf-912b-d7a6f9d511f2",
+      "createdTimestamp": 1505479415590,
+      "username": "teacher",
+      "enabled": true,
+      "totp": false,
+      "emailVerified": true,
+      "firstName": "Teacher",
+      "lastName": "Teacher",
+      "email": "teacher@localhost",
+      "credentials": [
+        {
+          "id": "dd871909-59d2-479b-88e2-c7480f0bcc4b",
+          "type": "password",
+          "userLabel": "",
+          "createdDate": 1656073970120,
+          "secretData": "{\"value\":\"4pf9K2jWSCcHC+CwsZP/qidN5pSmDUe6AX6wBerSGdBVKkExay8MWKx+EKmaaObZW6FVsD8vdW/ZsyUFD9gJ1Q==\",\"salt\":\"1/qNkZ5kr77jOMOBPBogGw==\"}",
+          "credentialData": "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+        }
+      ],
+      "disableableCredentialTypes": [],
+      "requiredActions": [],
+      "realmRoles": ["offline_access", "uma_authorization"],
+      "clientRoles": {
+        "account": ["view-profile", "manage-account"]
+      },
+      "notBefore": 0,
+      "groups": ["/Teachers", "/Users"]
+    },
+    {
       "id": "c4af4e2f-b432-4c3b-8405-cca86cd5b97b",
       "createdTimestamp": 1505479373742,
       "username": "user",
