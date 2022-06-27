@@ -15,6 +15,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -144,7 +145,7 @@ class ProjectResourceIT {
     @Transactional
     void createProjectWithExistingId() throws Exception {
         // Create the Project with an existing ID
-        project.setId(1L);
+        project.setId(UUID.randomUUID());
 
         int databaseSizeBeforeCreate = projectRepository.findAll().size();
 
@@ -240,7 +241,7 @@ class ProjectResourceIT {
             .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(project.getId().intValue())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(project.getId().toString())))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].stars").value(hasItem(DEFAULT_STARS)))
@@ -277,7 +278,7 @@ class ProjectResourceIT {
             .perform(get(ENTITY_API_URL_ID, project.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(project.getId().intValue()))
+            .andExpect(jsonPath("$.id").value(project.getId().toString()))
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.stars").value(DEFAULT_STARS))
@@ -335,7 +336,7 @@ class ProjectResourceIT {
     @Transactional
     void putNonExistingProject() throws Exception {
         int databaseSizeBeforeUpdate = projectRepository.findAll().size();
-        project.setId(count.incrementAndGet());
+        project.setId(UUID.randomUUID());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restProjectMockMvc
@@ -356,12 +357,12 @@ class ProjectResourceIT {
     @Transactional
     void putWithIdMismatchProject() throws Exception {
         int databaseSizeBeforeUpdate = projectRepository.findAll().size();
-        project.setId(count.incrementAndGet());
+        project.setId(UUID.randomUUID());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restProjectMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, count.incrementAndGet())
+                put(ENTITY_API_URL_ID, UUID.randomUUID())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(project))
@@ -377,7 +378,7 @@ class ProjectResourceIT {
     @Transactional
     void putWithMissingIdPathParamProject() throws Exception {
         int databaseSizeBeforeUpdate = projectRepository.findAll().size();
-        project.setId(count.incrementAndGet());
+        project.setId(UUID.randomUUID());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restProjectMockMvc
@@ -468,7 +469,7 @@ class ProjectResourceIT {
     @Transactional
     void patchNonExistingProject() throws Exception {
         int databaseSizeBeforeUpdate = projectRepository.findAll().size();
-        project.setId(count.incrementAndGet());
+        project.setId(UUID.randomUUID());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restProjectMockMvc
@@ -489,12 +490,12 @@ class ProjectResourceIT {
     @Transactional
     void patchWithIdMismatchProject() throws Exception {
         int databaseSizeBeforeUpdate = projectRepository.findAll().size();
-        project.setId(count.incrementAndGet());
+        project.setId(UUID.randomUUID());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restProjectMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, count.incrementAndGet())
+                patch(ENTITY_API_URL_ID, UUID.randomUUID())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(project))
@@ -510,7 +511,7 @@ class ProjectResourceIT {
     @Transactional
     void patchWithMissingIdPathParamProject() throws Exception {
         int databaseSizeBeforeUpdate = projectRepository.findAll().size();
-        project.setId(count.incrementAndGet());
+        project.setId(UUID.randomUUID());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restProjectMockMvc

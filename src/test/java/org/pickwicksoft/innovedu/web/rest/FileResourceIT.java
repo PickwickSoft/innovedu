@@ -39,9 +39,6 @@ import org.springframework.util.Base64Utils;
 @WithMockUser
 class FileResourceIT {
 
-    private static final String DEFAULT_TYPE = "AAAAAAAAAA";
-    private static final String UPDATED_TYPE = "BBBBBBBBBB";
-
     private static final byte[] DEFAULT_DATA = TestUtil.createByteArray(1, "0");
     private static final byte[] UPDATED_DATA = TestUtil.createByteArray(1, "1");
     private static final String DEFAULT_DATA_CONTENT_TYPE = "image/jpg";
@@ -49,9 +46,6 @@ class FileResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
-
-    private static final Integer DEFAULT_DIMENSION = 1;
-    private static final Integer UPDATED_DIMENSION = 2;
 
     private static final String ENTITY_API_URL = "/api/files";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -142,44 +136,10 @@ class FileResourceIT {
 
     @Test
     @Transactional
-    void checkTypeIsRequired() throws Exception {
-        int databaseSizeBeforeTest = fileRepository.findAll().size();
-        // Create the File, which fails.
-
-        restFileMockMvc
-            .perform(
-                post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(file))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<File> fileList = fileRepository.findAll();
-        assertThat(fileList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void checkNameIsRequired() throws Exception {
         int databaseSizeBeforeTest = fileRepository.findAll().size();
         // set the field null
         file.setName(null);
-
-        // Create the File, which fails.
-
-        restFileMockMvc
-            .perform(
-                post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(file))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<File> fileList = fileRepository.findAll();
-        assertThat(fileList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkDimensionIsRequired() throws Exception {
-        int databaseSizeBeforeTest = fileRepository.findAll().size();
-        // set the field null
 
         // Create the File, which fails.
 
@@ -205,11 +165,9 @@ class FileResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(file.getId().intValue())))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE)))
             .andExpect(jsonPath("$.[*].dataContentType").value(hasItem(DEFAULT_DATA_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].data").value(hasItem(Base64Utils.encodeToString(DEFAULT_DATA))))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].dimension").value(hasItem(DEFAULT_DIMENSION)));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -242,11 +200,9 @@ class FileResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(file.getId().intValue()))
-            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE))
             .andExpect(jsonPath("$.dataContentType").value(DEFAULT_DATA_CONTENT_TYPE))
             .andExpect(jsonPath("$.data").value(Base64Utils.encodeToString(DEFAULT_DATA)))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.dimension").value(DEFAULT_DIMENSION));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME));
     }
 
     @Test
