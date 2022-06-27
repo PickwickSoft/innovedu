@@ -22,6 +22,8 @@
       "title": "Titel",
       "description": "Beschreibung",
       "stars": "Sterne",
+      "star": "Gefällt mir",
+      "unstar": "Gefällt mir nicht mehr",
       "approved": "Approved",
       "date": "Datum",
       "user": "Nutzer",

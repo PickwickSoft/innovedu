@@ -97,6 +97,7 @@ public class SecurityConfiguration {
             .antMatchers(HttpMethod.GET,"/api/projects/**").permitAll()
             .antMatchers(HttpMethod.GET,"/api/topics/**").permitAll()
             .antMatchers(HttpMethod.GET,"/api/files/**").permitAll()
+            .antMatchers(HttpMethod.GET,"/api/stars/{projectId}").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/health/**").permitAll()

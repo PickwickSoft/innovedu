@@ -32,13 +32,25 @@
         </span>
       </div>
 
-      <button mat-stroked-button color="primary" type="submit" (click)="previousState()" data-cy="entityDetailsBackButton">
+      <button mat-button type="submit" (click)="previousState()" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
       </button>
 
-      <button mat-button class="pb-6">
+      <button mat-button class="pb-6" *ngIf="account !== null && isStarred" (click)="unStar()">
         <fa-icon class="text-yellow-400 pr-0.5" icon="star"></fa-icon>
-        <span>{{ project.stars }}</span>
+        <span>{{ stars }}</span>
+        <span jhiTranslate="innoveduApp.project.unstar">Unstar</span>
+      </button>
+
+      <button mat-button class="pb-6" *ngIf="account !== null && !isStarred" (click)="star()">
+        <fa-icon class="text-gray-400 pr-0.5" icon="star"></fa-icon>
+        <span>{{ stars }}</span>
+        <span jhiTranslate="innoveduApp.project.star">Star</span>
+      </button>
+
+      <button mat-button disabled class="pb-6" *ngIf="account === null">
+        <fa-icon class="text-gray-400 pr-0.5" icon="star"></fa-icon>
+        <span>{{ stars }}</span>
         <span jhiTranslate="innoveduApp.project.stars">Stars</span>
       </button>
 
@@ -46,8 +58,9 @@
         <fa-icon class="pr-0.5" icon="qrcode"></fa-icon>
         <span jhiTranslate="innoveduApp.project.qr-open">Open QR Code</span>
       </button>
+
       <span *ngIf="account !== null && project.user?.login === account.login">
-        <button mat-button color="danger" type="submit" (click)="delete(project)" data-cy="entityDeleteButton">
+        <button mat-button type="submit" (click)="delete(project)" data-cy="entityDeleteButton">
           <fa-icon icon="times"></fa-icon>
           <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
         </button>

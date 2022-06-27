@@ -5,7 +5,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import javax.validation.Valid;
 import org.pickwicksoft.innovedu.domain.Project;
 import org.pickwicksoft.innovedu.domain.Star;
 import org.pickwicksoft.innovedu.repository.ProjectRepository;
@@ -19,8 +18,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import tech.jhipster.web.util.HeaderUtil;
-import tech.jhipster.web.util.ResponseUtil;
 
 @RestController
 @RequestMapping("/api")
@@ -91,10 +88,7 @@ public class StarResource {
         star.setProject(project.get());
         userOperations.assignUser(star);
         Star result = starRepository.save(star);
-        return ResponseEntity
-            .created(new URI("/api/stars/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        return ResponseEntity.created(new URI("/api/stars/" + result.getId())).body(result);
     }
 
     @DeleteMapping("/stars/unstar/{projectId}")
@@ -110,9 +104,6 @@ public class StarResource {
             throw new BadRequestAlertException("Project not starred", ENTITY_NAME, "notstarred");
         }
         starRepository.delete(isStarred.get());
-        return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, projectId.toString()))
-            .build();
+        return ResponseEntity.ok().build();
     }
 }

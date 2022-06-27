@@ -22,6 +22,8 @@
       "title": "Title",
       "description": "Description",
       "stars": "Stars",
+      "star": "Star",
+      "unstar": "Unstar",
       "approved": "Approved",
       "date": "Date",
       "user": "User",

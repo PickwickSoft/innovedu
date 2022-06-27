@@ -12,6 +12,7 @@ import org.pickwicksoft.innovedu.domain.Project;
 import org.pickwicksoft.innovedu.repository.ProjectRepository;
 import org.pickwicksoft.innovedu.repository.UserRepository;
 import org.pickwicksoft.innovedu.service.assign.FileDeassigner;
+import org.pickwicksoft.innovedu.service.assign.StarDeleter;
 import org.pickwicksoft.innovedu.service.assign.UserOperations;
 import org.pickwicksoft.innovedu.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
@@ -52,16 +53,20 @@ public class ProjectResource {
 
     private final UserOperations userOperations;
 
+    private final StarDeleter starDeleter;
+
     public ProjectResource(
         ProjectRepository projectRepository,
         UserRepository userRepository,
         FileDeassigner fileDeassigner,
-        UserOperations userOperations
+        UserOperations userOperations,
+        StarDeleter starDeleter
     ) {
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
         this.fileDeassigner = fileDeassigner;
         this.userOperations = userOperations;
+        this.starDeleter = starDeleter;
     }
 
     /**
@@ -293,6 +298,7 @@ public class ProjectResource {
     public ResponseEntity<Void> deleteProject(@PathVariable UUID id) {
         log.debug("REST request to delete Project : {}", id);
         fileDeassigner.deassignFilesByProjectId(id);
+        starDeleter.deleteStarsByProjectId(id);
         projectRepository.deleteById(id);
         return ResponseEntity
             .noContent()
