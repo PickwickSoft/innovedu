@@ -10,7 +10,6 @@ import dayjs from 'dayjs/esm';
 import { IProject, Project } from '../project.model';
 import { ProjectService } from '../service/project.service';
 import { IUser } from 'app/entities/user/user.model';
-import { UserService } from 'app/entities/user/user.service';
 import { ITopic } from 'app/teacher/topic/topic.model';
 import { TopicService } from 'app/teacher/topic/service/topic.service';
 import { AccountService } from '../../../core/auth/account.service';
