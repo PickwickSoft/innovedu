@@ -8,6 +8,9 @@ import { ASC, DESC, ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { ProjectService } from '../service/project.service';
 import { ProjectDeleteDialogComponent } from '../delete/project-delete-dialog.component';
 import { ParseLinks } from 'app/core/util/parse-links.service';
+import { debounceTime, Subject } from 'rxjs';
+import { Account } from '../../../core/auth/account.model';
+import { AccountService } from '../../../core/auth/account.service';
 
 @Component({
   selector: 'jhi-project',
@@ -16,15 +19,27 @@ import { ParseLinks } from 'app/core/util/parse-links.service';
 })
 export class ProjectComponent implements OnInit {
   projects: IProject[];
+  userProjects: IProject[];
+  initialSize: number;
   isLoading = false;
   itemsPerPage: number;
   links: { [key: string]: number };
   page: number;
   predicate: string;
   ascending: boolean;
+  value: any;
+  debounceSearch: Subject<any> = new Subject<any>();
+  account: Account | null = null;
 
-  constructor(protected projectService: ProjectService, protected modalService: NgbModal, protected parseLinks: ParseLinks) {
+  constructor(
+    protected projectService: ProjectService,
+    protected modalService: NgbModal,
+    protected parseLinks: ParseLinks,
+    private accountService: AccountService
+  ) {
     this.projects = [];
+    this.userProjects = [];
+    this.initialSize = -1;
     this.itemsPerPage = ITEMS_PER_PAGE;
     this.page = 0;
     this.links = {
@@ -32,16 +47,18 @@ export class ProjectComponent implements OnInit {
     };
     this.predicate = 'id';
     this.ascending = true;
+    this.value = '';
   }
 
   loadAll(): void {
     this.isLoading = true;
 
     this.projectService
-      .query({
+      .queryApproved({
         page: this.page,
         size: this.itemsPerPage,
         sort: this.sort(),
+        search: this.value,
       })
       .subscribe({
         next: (res: HttpResponse<IProject[]>) => {
@@ -54,22 +71,77 @@ export class ProjectComponent implements OnInit {
       });
   }
 
+  loadAllExcludeUser(): void {
+    this.isLoading = true;
+
+    this.projectService
+      .queryExcludeUser({
+        page: this.page,
+        size: this.itemsPerPage,
+        sort: this.sort(),
+        search: this.value,
+      })
+      .subscribe({
+        next: (res: HttpResponse<IProject[]>) => {
+          this.isLoading = false;
+          this.paginateProjects(res.body, res.headers);
+        },
+        error: () => {
+          this.isLoading = false;
+        },
+      });
+  }
+
+  loadAllOfUser(): void {
+    this.isLoading = true;
+
+    this.projectService
+      .queryOfUser({
+        size: this.itemsPerPage,
+        sort: this.sort(),
+        search: this.value,
+      })
+      .subscribe({
+        next: (res: HttpResponse<IProject[]>) => {
+          this.isLoading = false;
+          this.userProjects = res.body != null ? res.body : [];
+        },
+        error: () => {
+          this.isLoading = false;
+        },
+      });
+  }
+
+  load(): void {
+    if (this.account !== null) {
+      this.loadAllOfUser();
+      this.loadAllExcludeUser();
+    } else {
+      this.loadAll();
+    }
+  }
+
   reset(): void {
     this.page = 0;
     this.projects = [];
-    this.loadAll();
+    this.userProjects = [];
+    this.load();
   }
 
   loadPage(page: number): void {
     this.page = page;
-    this.loadAll();
+    this.load();
   }
 
   ngOnInit(): void {
-    this.loadAll();
+    this.accountService.identity().subscribe(account => (this.account = account));
+    this.debounceSearch.pipe(debounceTime(500)).subscribe(() => {
+      this.reset();
+    });
+    this.load();
   }
 
-  trackId(_index: number, item: IProject): number {
+  trackId(_index: number, item: IProject): string {
     return item.id!;
   }
 
@@ -105,6 +177,9 @@ export class ProjectComponent implements OnInit {
       for (const d of data) {
         this.projects.push(d);
       }
+    }
+    if (this.initialSize === -1) {
+      this.initialSize = this.projects.length;
     }
   }
 }

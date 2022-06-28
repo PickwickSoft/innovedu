@@ -1,16 +1,20 @@
 <div>
   <div class="w-100 text-center p-8 py-12">
     <h1 class="font-bold text-4xl text-center" jhiTranslate="innoveduApp.project.home.title">Projects</h1>
-    <p class="text-3xl font-light">
+    <p class="text-3xl font-light max-w-4xl centered">
       Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
       erat, sed diam voluptua.
     </p>
-    <mat-form-field [hidden]="projects?.length === 0">
-      <input matInput />
+
+    <mat-form-field class="search" [hidden]="initialSize === 0">
       <mat-placeholder jhiTranslate="innoveduApp.project.home.search">Search in all projects</mat-placeholder>
+      <input matInput type="search" autocomplete="off" [(ngModel)]="value" (keyup)="debounceSearch.next($any($event.target).value)" />
+      <button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value = ''; reset()">
+        <mat-icon>close</mat-icon>
+      </button>
     </mat-form-field>
   </div>
-  <h2 id="page-heading" class="mb-8" data-cy="ProjectHeading">
+  <h2 id="page-heading" class="mb-8" data-cy="ProjectHeading" *ngIf="account !== null">
     <div class="d-flex justify-content-end space-x-1">
       <button mat-raised-button (click)="reset()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
@@ -35,29 +39,85 @@
 
   <jhi-alert></jhi-alert>
 
-  <div class="alert alert-warning" id="no-result" *ngIf="projects?.length === 0">
+  <div class="alert alert-warning" id="no-result" *ngIf="projects?.length === 0 && userProjects?.length === 0">
     <span jhiTranslate="innoveduApp.project.home.notFound">No projects found</span>
   </div>
 
-  <div
-    class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-y-4 gap-x-10 mr-auto ml-auto"
-    data-cy="entityTable"
-    infinite-scroll
-    (scrolled)="loadPage(page + 1)"
-    [infiniteScrollDisabled]="page >= links['last']"
-    [infiniteScrollDistance]="0"
-  >
-    <a *ngFor="let project of projects; trackBy: trackId" [routerLink]="['/project', project.id, 'view']" data-cy="entityDetailsButton">
-      <mat-card class="project-card hover:shadow-xl">
-        <mat-card-title>{{ project.title }}</mat-card-title>
-        <mat-card-subtitle>
-          <fa-icon class="text-yellow-400" icon="star" [fixedWidth]="true"></fa-icon>
-          {{ project.stars }}
-        </mat-card-subtitle>
-        <mat-card-content>
-          {{ project.description }}
-        </mat-card-content>
-      </mat-card>
-    </a>
+  <div [ngSwitch]="account !== null">
+    <div *ngSwitchCase="true">
+      <div *ngIf="userProjects && userProjects.length > 0">
+        <p class="">My projects</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-y-4 gap-x-10 mr-auto ml-auto pb-20">
+          <a *ngFor="let project of userProjects; trackBy: trackId" [routerLink]="['/project', project.id, 'view']">
+            <mat-card class="project-card hover:shadow-xl">
+              <mat-card-title>{{ project.title }}</mat-card-title>
+              <mat-card-subtitle>
+                <fa-icon class="text-yellow-400" icon="star" [fixedWidth]="true"></fa-icon>
+                {{ project.stars?.length }}
+              </mat-card-subtitle>
+              <mat-card-content class="two-lines">
+                {{ project.description }}
+              </mat-card-content>
+            </mat-card>
+          </a>
+        </div>
+      </div>
+
+      <div *ngIf="projects && projects.length > 0">
+        <p class="">All (other) projects</p>
+        <div
+          infinite-scroll
+          (scrolled)="loadPage(page + 1)"
+          [infiniteScrollDisabled]="page >= links['last']"
+          [infiniteScrollDistance]="0"
+          id="entities"
+          class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-y-4 gap-x-10 mr-auto ml-auto"
+          data-cy="entityTable"
+        >
+          <a
+            *ngFor="let project of projects; trackBy: trackId"
+            [routerLink]="['/project', project.id, 'view']"
+            data-cy="entityDetailsButton"
+          >
+            <mat-card class="project-card hover:shadow-xl">
+              <mat-card-title>{{ project.title }}</mat-card-title>
+              <mat-card-subtitle>
+                <fa-icon class="text-yellow-400" icon="star" [fixedWidth]="true"></fa-icon>
+                {{ project.stars?.length }}
+              </mat-card-subtitle>
+              <mat-card-content class="two-lines">
+                {{ project.description }}
+              </mat-card-content>
+            </mat-card>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="false">
+      <div
+        *ngIf="projects && projects.length"
+        infinite-scroll
+        (scrolled)="loadPage(page + 1)"
+        [infiniteScrollDisabled]="page >= links['last']"
+        [infiniteScrollDistance]="0"
+        id="entities"
+        class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-y-4 gap-x-10 mr-auto ml-auto"
+        data-cy="entityTable"
+      >
+        <a *ngFor="let project of projects; trackBy: trackId" [routerLink]="['/project', project.id, 'view']" data-cy="entityDetailsButton">
+          <mat-card class="project-card hover:shadow-xl">
+            <mat-card-title>{{ project.title }}</mat-card-title>
+            <mat-card-subtitle>
+              <fa-icon class="text-yellow-400" icon="star" [fixedWidth]="true"></fa-icon>
+              {{ project.stars?.length }}
+            </mat-card-subtitle>
+            <mat-card-content class="two-lines">
+              {{ project.description }}
+            </mat-card-content>
+          </mat-card>
+        </a>
+      </div>
+    </div>
   </div>
 </div>

@@ -5,6 +5,7 @@
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import 'material';
+@import 'theme';
 /* ==============================================================
 Bootstrap tweaks
 ===============================================================*/
@@ -62,14 +63,6 @@ Generic styles
 ========================================================================== */
 
 /* Error highlight on input fields */
-.ng-valid[required],
-.ng-valid.required {
-  border-left: 5px solid green;
-}
-
-.ng-invalid:not(form) {
-  border-left: 5px solid red;
-}
 
 /* other generic styles */
 
@@ -77,6 +70,11 @@ Generic styles
   padding: 1.5%;
   margin-top: 20px;
   border: none;
+  height: 100vh;
+}
+
+.centered {
+  @apply mr-auto ml-auto;
 }
 
 .padded {
@@ -126,6 +124,14 @@ Generic styles
 .hand,
 [jhisortby] {
   cursor: pointer;
+}
+
+table {
+  width: 100%;
+}
+
+.search {
+  @apply w-96 max-w-full;
 }
 
 /* ==========================================================================

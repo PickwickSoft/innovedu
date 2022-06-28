@@ -10,10 +10,6 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ project.id }}</span>
-        </dd>
         <dt><span jhiTranslate="innoveduApp.project.title">Title</span></dt>
         <dd>
           <span>{{ project.title }}</span>
@@ -24,7 +20,7 @@
         </dd>
         <dt><span jhiTranslate="innoveduApp.project.stars">Stars</span></dt>
         <dd>
-          <span>{{ project.stars }}</span>
+          <span>{{ project.stars?.length }}</span>
         </dd>
         <dt><span jhiTranslate="innoveduApp.project.approved">Approved</span></dt>
         <dd>
@@ -36,7 +32,7 @@
         </dd>
         <dt><span jhiTranslate="innoveduApp.project.user">User</span></dt>
         <dd>
-          <span>{{ project.user?.login }}</span>
+          <span>{{ project.user?.firstName }} {{ project.user?.lastName }}</span>
         </dd>
         <dt><span jhiTranslate="innoveduApp.project.topic">Topic</span></dt>
         <dd>

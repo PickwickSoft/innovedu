@@ -14,10 +14,6 @@
         <dd>
           <span>{{ file.id }}</span>
         </dd>
-        <dt><span jhiTranslate="innoveduApp.file.type">Type</span></dt>
-        <dd>
-          <span>{{ file.type }}</span>
-        </dd>
         <dt><span jhiTranslate="innoveduApp.file.data">Data</span></dt>
         <dd>
           <div *ngIf="file.data">
@@ -29,10 +25,6 @@
         <dd>
           <span>{{ file.name }}</span>
         </dd>
-        <dt><span jhiTranslate="innoveduApp.file.dimension">Dimension</span></dt>
-        <dd>
-          <span>{{ file.dimension }}</span>
-        </dd>
         <dt><span jhiTranslate="innoveduApp.file.project">Project</span></dt>
         <dd>
           <div *ngIf="file.project">
@@ -41,11 +33,11 @@
         </dd>
       </dl>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+      <button mat-stroked-button color="primary" type="submit" (click)="previousState()" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
       </button>
 
-      <button type="button" [routerLink]="['/file', file.id, 'edit']" class="btn btn-primary">
+      <button mat-raised-button color="primary" type="button" [routerLink]="['/file', file.id, 'edit']">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
       </button>
     </div>

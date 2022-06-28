@@ -13,7 +13,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "file")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class File implements Serializable {
+public class File implements Serializable, UserAssignable {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,10 +22,6 @@ public class File implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     @Column(name = "id")
     private Long id;
-
-    @NotNull
-    @Column(name = "type", nullable = false)
-    private String type;
 
     @Lob
     @Column(name = "data", nullable = false)
@@ -40,13 +36,12 @@ public class File implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @NotNull
-    @Column(name = "dimension", nullable = false)
-    private Integer dimension;
-
     @ManyToOne
     @JsonIgnoreProperties(value = { "user", "topic" }, allowSetters = true)
     private Project project;
+
+    @ManyToOne
+    private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -61,19 +56,6 @@ public class File implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getType() {
-        return this.type;
-    }
-
-    public File type(String type) {
-        this.setType(type);
-        return this;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public byte[] getData() {
@@ -115,19 +97,6 @@ public class File implements Serializable {
         this.name = name;
     }
 
-    public Integer getDimension() {
-        return this.dimension;
-    }
-
-    public File dimension(Integer dimension) {
-        this.setDimension(dimension);
-        return this;
-    }
-
-    public void setDimension(Integer dimension) {
-        this.dimension = dimension;
-    }
-
     public Project getProject() {
         return this.project;
     }
@@ -165,11 +134,17 @@ public class File implements Serializable {
     public String toString() {
         return "File{" +
             "id=" + getId() +
-            ", type='" + getType() + "'" +
             ", data='" + getData() + "'" +
             ", dataContentType='" + getDataContentType() + "'" +
             ", name='" + getName() + "'" +
-            ", dimension=" + getDimension() +
             "}";
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

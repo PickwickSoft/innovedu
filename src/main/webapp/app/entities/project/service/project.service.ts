@@ -15,6 +15,9 @@ export type EntityArrayResponseType = HttpResponse<IProject[]>;
 @Injectable({ providedIn: 'root' })
 export class ProjectService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/projects');
+  protected userResourceUrl = this.applicationConfigService.getEndpointFor('api/projects/user');
+  protected excludeUserResourceUrl = this.applicationConfigService.getEndpointFor('api/projects/excludeUser');
+  protected approvedResourceUrl = this.applicationConfigService.getEndpointFor('api/projects/approved');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -28,14 +31,14 @@ export class ProjectService {
   update(project: IProject): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(project);
     return this.http
-      .put<IProject>(`${this.resourceUrl}/${getProjectIdentifier(project) as number}`, copy, { observe: 'response' })
+      .put<IProject>(`${this.resourceUrl}/${getProjectIdentifier(project) as string}`, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   partialUpdate(project: IProject): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(project);
     return this.http
-      .patch<IProject>(`${this.resourceUrl}/${getProjectIdentifier(project) as number}`, copy, { observe: 'response' })
+      .patch<IProject>(`${this.resourceUrl}/${getProjectIdentifier(project) as string}`, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
@@ -52,7 +55,28 @@ export class ProjectService {
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
-  delete(id: number): Observable<HttpResponse<{}>> {
+  queryApproved(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<IProject[]>(this.approvedResourceUrl, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  queryOfUser(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<IProject[]>(this.userResourceUrl, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  queryExcludeUser(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<IProject[]>(this.excludeUserResourceUrl, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  delete(id: string): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 

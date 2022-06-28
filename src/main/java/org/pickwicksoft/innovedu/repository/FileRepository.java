@@ -2,6 +2,7 @@ package org.pickwicksoft.innovedu.repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import org.pickwicksoft.innovedu.domain.File;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +36,12 @@ public interface FileRepository extends JpaRepository<File, Long> {
     @Query("select distinct file from File file left join fetch file.project")
     List<File> findAllWithToOneRelationships();
 
+    @Query("select distinct file from File file left join fetch file.project where file.project.id = :id")
+    List<File> findAllWithToOneRelationshipsForProject(@Param("id") UUID projectId);
+
     @Query("select file from File file left join fetch file.project where file.id =:id")
     Optional<File> findOneWithToOneRelationships(@Param("id") Long id);
+
+    @Query("select distinct file from File file left join fetch file.project where file.user.login = ?#{principal.preferredUsername}")
+    List<File> findAllWithToOneRelationshipsCurrentUser();
 }

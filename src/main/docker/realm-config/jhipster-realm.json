@@ -410,6 +410,15 @@
       "subGroups": []
     },
     {
+      "id": "9f539f38-d151-4e6b-8aec-35847eb230ca",
+      "name": "Teachers",
+      "path": "/Teachers",
+      "attributes": {},
+      "realmRoles": ["ROLE_TEACHER"],
+      "clientRoles": {},
+      "subGroups": []
+    },
+    {
       "id": "672767bb-4ab0-4d37-93a1-9b6c2416b6b2",
       "name": "Users",
       "path": "/Users",

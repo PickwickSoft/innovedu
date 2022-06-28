@@ -12,7 +12,7 @@
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-project"
-        [routerLink]="['/project/new']"
+        [routerLink]="['/teacher/project/new']"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="innoveduApp.project.home.createLabel"> Create a new Project </span>
@@ -32,7 +32,6 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="reset()">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="title"><span jhiTranslate="innoveduApp.project.title">Title</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="description">
             <span jhiTranslate="innoveduApp.project.description">Description</span> <fa-icon icon="sort"></fa-icon>
@@ -53,17 +52,12 @@
       </thead>
       <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
         <tr *ngFor="let project of projects; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/project', project.id, 'view']">{{ project.id }}</a>
-          </td>
           <td>{{ project.title }}</td>
           <td>{{ project.description }}</td>
-          <td>{{ project.stars }}</td>
+          <td>{{ project.stars?.length }}</td>
           <td>{{ project.approved }}</td>
           <td>{{ project.date | formatMediumDatetime }}</td>
-          <td>
-            {{ project.user?.login }}
-          </td>
+          <td>{{ project.user?.firstName }} {{ project.user?.lastName }}</td>
           <td>
             <div *ngIf="project.topic">
               <a [routerLink]="['/topic', project.topic?.id, 'view']">{{ project.topic?.title }}</a>
@@ -73,7 +67,7 @@
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/project', project.id, 'view']"
+                [routerLink]="['/teacher/project', project.id, 'view']"
                 class="btn btn-info btn-sm"
                 data-cy="entityDetailsButton"
               >
@@ -83,7 +77,7 @@
 
               <button
                 type="submit"
-                [routerLink]="['/project', project.id, 'edit']"
+                [routerLink]="['/teacher/project', project.id, 'edit']"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >

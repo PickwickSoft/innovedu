@@ -7,9 +7,9 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entitäten",
-        "project": "Project",
-        "topic": "Topic",
-        "file": "File",
+        "project": "Projekt",
+        "topic": "Thema",
+        "file": "Datei",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
@@ -26,13 +26,16 @@
         "userManagement": "Benutzerverwaltung",
         "tracker": "Benutzer Aktivitäten",
         "metrics": "Metriken",
-        "projects": "Projekt Verwaltung",
         "health": "Status",
         "configuration": "Konfiguration",
         "logs": "Protokoll",
         "apidocs": "API",
         "database": "Datenbank",
         "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+      },
+      "teacher": {
+        "main": "Lehrerfunktionen",
+        "projects": "Projekt Verwaltung"
       },
       "language": "Sprache"
     },
@@ -135,7 +138,7 @@
     "idnull": "Ungültige ID",
     "idinvalid": "Ungültige ID",
     "idnotfound": "ID konnte nicht gefunden werden",
-    "file": {
+    "Datei": {
       "could.not.extract": "Datei konnte nicht extrahiert werden",
       "not.image": "Es wird erwartet, dass die Datei ein Bild ist. Die Datei ist jedoch vom Typ \"{{ fileType }}\""
     }

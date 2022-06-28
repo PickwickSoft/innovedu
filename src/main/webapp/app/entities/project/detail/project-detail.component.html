@@ -1,58 +1,81 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="project">
-      <h2 data-cy="projectDetailsHeading"><span jhiTranslate="innoveduApp.project.detail.title">Project</span></h2>
-
-      <hr />
-
+  <div class="">
+    <div
+      class="text-center max-w-3xl mr-auto ml-auto"
+      *ngIf="project && (project.user?.login === account?.login || project?.approved === true)"
+    >
       <jhi-alert-error></jhi-alert-error>
 
+      <div class="alert alert-warning" *ngIf="project?.approved === false">
+        <span jhiTranslate="innoveduApp.project.notApproved">This project has not been approved yet</span>
+      </div>
+
       <jhi-alert></jhi-alert>
+      <h1 class="text-theme text-5xl font-medium pb-6">{{ project.title }}</h1>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ project.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="innoveduApp.project.title">Title</span></dt>
-        <dd>
-          <span>{{ project.title }}</span>
-        </dd>
-        <dt><span jhiTranslate="innoveduApp.project.description">Description</span></dt>
-        <dd>
-          <span>{{ project.description }}</span>
-        </dd>
-        <dt><span jhiTranslate="innoveduApp.project.stars">Stars</span></dt>
-        <dd>
-          <span>{{ project.stars }}</span>
-        </dd>
-        <dt><span jhiTranslate="innoveduApp.project.approved">Approved</span></dt>
-        <dd>
-          <span>{{ project.approved }}</span>
-        </dd>
-        <dt><span jhiTranslate="innoveduApp.project.date">Date</span></dt>
-        <dd>
+      <div class="flex flex-col sm:flex-row justify-center gap-x-6 gap-y-1 pb-6">
+        <div *ngIf="project.topic && project.topic.title?.length !== 0">
+          <span class="text-theme font-medium" jhiTranslate="innoveduApp.project.topic">Topic</span>
+          <span>{{ project.topic?.title }}</span>
+        </div>
+        <div>
+          <span class="text-theme font-medium" jhiTranslate="innoveduApp.project.date">Date</span>
           <span>{{ project.date | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="innoveduApp.project.user">User</span></dt>
-        <dd>
-          <span>{{ project.user?.login }}</span>
-        </dd>
-        <dt><span jhiTranslate="innoveduApp.project.topic">Topic</span></dt>
-        <dd>
-          <div *ngIf="project.topic">
-            <a [routerLink]="['/topic', project.topic?.id, 'view']">{{ project.topic?.title }}</a>
-          </div>
-        </dd>
-      </dl>
+        </div>
+        <div>
+          <span class="text-theme font-medium" *ngIf="account !== null" jhiTranslate="innoveduApp.project.user">User</span>
+          <span *ngIf="account !== null">{{ project.user?.firstName }} {{ project.user?.lastName }}</span>
+        </div>
+      </div>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+      <p class="text-2xl font-normal pb-6">{{ project.description }}</p>
+
+      <div class="pb-6" *ngIf="files && files?.length != 0">
+        <fa-icon class="pr-4" icon="paperclip"></fa-icon>
+        <span class="pr-4" *ngFor="let file of files">
+          <a *ngIf="file.data" (click)="openFile(file.data, file.dataContentType)">
+            {{ file.name }}.{{ getExtension(file.dataContentType) }}
+          </a>
+        </span>
+      </div>
+
+      <button mat-button type="submit" (click)="previousState()" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
       </button>
 
-      <button type="button" [routerLink]="['/project', project.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      <button mat-button class="pb-6" *ngIf="account !== null && isStarred" (click)="unStar()">
+        <fa-icon class="text-yellow-400 pr-0.5" icon="star"></fa-icon>
+        <span>{{ stars }}</span>
+        <span jhiTranslate="innoveduApp.project.unstar">Unstar</span>
       </button>
+
+      <button mat-button class="pb-6" *ngIf="account !== null && !isStarred" (click)="star()">
+        <fa-icon class="text-gray-400 pr-0.5" icon="star"></fa-icon>
+        <span>{{ stars }}</span>
+        <span jhiTranslate="innoveduApp.project.star">Star</span>
+      </button>
+
+      <button mat-button disabled class="pb-6" *ngIf="account === null">
+        <fa-icon class="text-gray-400 pr-0.5" icon="star"></fa-icon>
+        <span>{{ stars }}</span>
+        <span jhiTranslate="innoveduApp.project.stars">Stars</span>
+      </button>
+
+      <button mat-button type="submit" (click)="openQRCode(project)" class="pb-6">
+        <fa-icon class="pr-0.5" icon="qrcode"></fa-icon>
+        <span jhiTranslate="innoveduApp.project.qr-open">Open QR Code</span>
+      </button>
+
+      <span *ngIf="account !== null && project.user?.login === account.login">
+        <button mat-button type="submit" (click)="delete(project)" data-cy="entityDeleteButton">
+          <fa-icon icon="times"></fa-icon>
+          <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+        </button>
+
+        <button mat-raised-button color="primary" type="button" [routerLink]="['/project', project.id, 'edit']">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </span>
     </div>
   </div>
 </div>

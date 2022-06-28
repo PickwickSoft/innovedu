@@ -5,10 +5,12 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.pickwicksoft.innovedu.domain.File;
 import org.pickwicksoft.innovedu.repository.FileRepository;
+import org.pickwicksoft.innovedu.service.assign.UserOperations;
 import org.pickwicksoft.innovedu.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,8 +38,11 @@ public class FileResource {
 
     private final FileRepository fileRepository;
 
-    public FileResource(FileRepository fileRepository) {
+    private final UserOperations userOperations;
+
+    public FileResource(FileRepository fileRepository, UserOperations userOperations) {
         this.fileRepository = fileRepository;
+        this.userOperations = userOperations;
     }
 
     /**
@@ -53,6 +58,7 @@ public class FileResource {
         if (file.getId() != null) {
             throw new BadRequestAlertException("A new file cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        userOperations.assignUser(file);
         File result = fileRepository.save(file);
         return ResponseEntity
             .created(new URI("/api/files/" + result.getId()))
@@ -85,6 +91,7 @@ public class FileResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
+        userOperations.assignUser(file);
         File result = fileRepository.save(file);
         return ResponseEntity
             .ok()
@@ -123,9 +130,6 @@ public class FileResource {
         Optional<File> result = fileRepository
             .findById(file.getId())
             .map(existingFile -> {
-                if (file.getType() != null) {
-                    existingFile.setType(file.getType());
-                }
                 if (file.getData() != null) {
                     existingFile.setData(file.getData());
                 }
@@ -134,9 +138,6 @@ public class FileResource {
                 }
                 if (file.getName() != null) {
                     existingFile.setName(file.getName());
-                }
-                if (file.getDimension() != null) {
-                    existingFile.setDimension(file.getDimension());
                 }
 
                 return existingFile;
@@ -156,9 +157,27 @@ public class FileResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of files in body.
      */
     @GetMapping("/files")
-    public List<File> getAllFiles(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+    public List<File> getAllFiles(
+        @RequestParam(required = false, defaultValue = "false") boolean eagerload,
+        @RequestParam(required = false, defaultValue = "null") UUID projectId
+    ) {
         log.debug("REST request to get all Files");
+        if (projectId != null) {
+            return fileRepository.findAllWithToOneRelationshipsForProject(projectId);
+        }
         return fileRepository.findAllWithEagerRelationships();
+    }
+
+    /**
+     * {@code GET  /files/user} : get all the files of current user.
+     *
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of files in body.
+     */
+    @GetMapping("/files/user")
+    public List<File> getAllFilesOfCurrentUser(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+        log.debug("REST request to get all Files");
+        return fileRepository.findAllWithToOneRelationshipsCurrentUser();
     }
 
     /**

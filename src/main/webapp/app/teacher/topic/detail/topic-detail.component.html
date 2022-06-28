@@ -10,10 +10,6 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ topic.id }}</span>
-        </dd>
         <dt><span jhiTranslate="innoveduApp.topic.title">Title</span></dt>
         <dd>
           <span>{{ topic.title }}</span>
@@ -28,7 +24,7 @@
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
       </button>
 
-      <button type="button" [routerLink]="['/topic', topic.id, 'edit']" class="btn btn-primary">
+      <button type="button" [routerLink]="['/teacher/topic', topic.id, 'edit']" class="btn btn-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
       </button>
     </div>

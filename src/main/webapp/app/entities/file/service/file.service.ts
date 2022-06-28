@@ -13,6 +13,7 @@ export type EntityArrayResponseType = HttpResponse<IFile[]>;
 @Injectable({ providedIn: 'root' })
 export class FileService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/files');
+  protected currentUserResourceUrl = this.applicationConfigService.getEndpointFor('api/files/user');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -35,6 +36,11 @@ export class FileService {
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IFile[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
+
+  queryAllOfCurrentUser(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<IFile[]>(this.currentUserResourceUrl, { params: options, observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {

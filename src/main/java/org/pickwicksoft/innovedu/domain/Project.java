@@ -1,7 +1,11 @@
 package org.pickwicksoft.innovedu.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -14,15 +18,14 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "project")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Project implements Serializable {
+public class Project implements Serializable, UserAssignable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
     @Column(name = "id")
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
     @NotNull
     @Size(min = 3)
@@ -33,9 +36,6 @@ public class Project implements Serializable {
     @Size(min = 3)
     @Column(name = "description", nullable = false)
     private String description;
-
-    @Column(name = "stars")
-    private Integer stars = 0;
 
     @NotNull
     @Column(name = "approved", nullable = false)
@@ -50,18 +50,23 @@ public class Project implements Serializable {
     @ManyToOne
     private Topic topic;
 
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = { "user" })
+    @JsonManagedReference
+    private List<Star> stars;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
-    public Long getId() {
+    public UUID getId() {
         return this.id;
     }
 
-    public Project id(Long id) {
+    public Project id(UUID id) {
         this.setId(id);
         return this;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -89,19 +94,6 @@ public class Project implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Integer getStars() {
-        return this.stars;
-    }
-
-    public Project stars(Integer stars) {
-        this.setStars(stars);
-        return this;
-    }
-
-    public void setStars(Integer stars) {
-        this.stars = stars;
     }
 
     public Boolean getApproved() {
@@ -182,9 +174,16 @@ public class Project implements Serializable {
             "id=" + getId() +
             ", title='" + getTitle() + "'" +
             ", description='" + getDescription() + "'" +
-            ", stars=" + getStars() +
             ", approved='" + getApproved() + "'" +
             ", date='" + getDate() + "'" +
             "}";
+    }
+
+    public List<Star> getStars() {
+        return stars;
+    }
+
+    public void setStars(List<Star> stars) {
+        this.stars = stars;
     }
 }

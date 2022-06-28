@@ -46,30 +46,6 @@
             <li>
               <a
                 class="dropdown-item"
-                routerLink="project"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true }"
-                (click)="collapseNavbar()"
-              >
-                <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.entities.project">Project</span>
-              </a>
-            </li>
-            <li>
-              <a
-                class="dropdown-item"
-                routerLink="topic"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true }"
-                (click)="collapseNavbar()"
-              >
-                <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.entities.topic">Topic</span>
-              </a>
-            </li>
-            <li>
-              <a
-                class="dropdown-item"
                 routerLink="file"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: true }"
@@ -82,6 +58,42 @@
             <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
           </ul>
         </li>
+        <li
+          *jhiHasAnyAuthority="'ROLE_TEACHER'"
+          ngbDropdown
+          class="nav-item dropdown pointer"
+          display="dynamic"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="teacher-menu">
+            <span>
+              <fa-icon icon="users-cog"></fa-icon>
+              <span jhiTranslate="global.menu.teacher.main">Teacher Functions</span>
+            </span>
+          </a>
+          <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="admin-menu">
+            <li>
+              <a class="dropdown-item" routerLink="teacher/project" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="screwdriver-wrench" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.teacher.projects">Projects Administration</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                routerLink="teacher/topic"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="collapseNavbar()"
+              >
+                <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.entities.topic">Topic</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
         <li
           *jhiHasAnyAuthority="'ROLE_ADMIN'"
           ngbDropdown
@@ -97,12 +109,6 @@
             </span>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="admin-menu">
-            <li>
-              <a class="dropdown-item" routerLink="admin/project" routerLinkActive="active" (click)="collapseNavbar()">
-                <fa-icon icon="screwdriver-wrench" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.admin.projects">Projects Administration</span>
-              </a>
-            </li>
             <li>
               <a class="dropdown-item" routerLink="admin/metrics" routerLinkActive="active" (click)="collapseNavbar()">
                 <fa-icon icon="tachometer-alt" [fixedWidth]="true"></fa-icon>

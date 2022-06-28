@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import dayjs from 'dayjs/esm';
-import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 
 import { IProject, Project } from '../project.model';
 import { ProjectService } from '../service/project.service';
 import { IUser } from 'app/entities/user/user.model';
-import { UserService } from 'app/entities/user/user.service';
-import { ITopic } from 'app/entities/topic/topic.model';
-import { TopicService } from 'app/entities/topic/service/topic.service';
+import { ITopic } from 'app/teacher/topic/topic.model';
+import { TopicService } from 'app/teacher/topic/service/topic.service';
+import { AccountService } from '../../../core/auth/account.service';
+import { Account } from '../../../core/auth/account.model';
 
 @Component({
   selector: 'jhi-project-update',
@@ -22,23 +22,24 @@ import { TopicService } from 'app/entities/topic/service/topic.service';
 export class ProjectUpdateComponent implements OnInit {
   isSaving = false;
 
-  usersSharedCollection: IUser[] = [];
   topicsSharedCollection: ITopic[] = [];
+
+  topicControl = new FormControl();
 
   editForm = this.fb.group({
     id: [],
     title: [null, [Validators.required, Validators.minLength(3)]],
     description: [null, [Validators.required, Validators.minLength(3)]],
-    stars: [],
-    approved: [null, [Validators.required]],
-    date: [],
-    user: [],
-    topic: [],
+    topic: this.topicControl,
   });
+
+  account: Account | null = null;
+
+  project: IProject | null = null;
 
   constructor(
     protected projectService: ProjectService,
-    protected userService: UserService,
+    private accountService: AccountService,
     protected topicService: TopicService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
@@ -50,10 +51,15 @@ export class ProjectUpdateComponent implements OnInit {
         const today = dayjs().startOf('day');
         project.date = today;
       }
+      this.project = project;
+
+      this.accountService.identity().subscribe(account => (this.account = account));
 
       this.updateForm(project);
 
       this.loadRelationshipsOptions();
+
+      this.updateSelectedTopic(project);
     });
   }
 
@@ -103,24 +109,13 @@ export class ProjectUpdateComponent implements OnInit {
       id: project.id,
       title: project.title,
       description: project.description,
-      stars: project.stars,
-      approved: project.approved,
-      date: project.date ? project.date.format(DATE_TIME_FORMAT) : null,
-      user: project.user,
       topic: project.topic,
     });
 
-    this.usersSharedCollection = this.userService.addUserToCollectionIfMissing(this.usersSharedCollection, project.user);
     this.topicsSharedCollection = this.topicService.addTopicToCollectionIfMissing(this.topicsSharedCollection, project.topic);
   }
 
   protected loadRelationshipsOptions(): void {
-    this.userService
-      .query()
-      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
-      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing(users, this.editForm.get('user')!.value)))
-      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
-
     this.topicService
       .query()
       .pipe(map((res: HttpResponse<ITopic[]>) => res.body ?? []))
@@ -134,11 +129,11 @@ export class ProjectUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       title: this.editForm.get(['title'])!.value,
       description: this.editForm.get(['description'])!.value,
-      stars: this.editForm.get(['stars'])!.value,
-      approved: this.editForm.get(['approved'])!.value,
-      date: this.editForm.get(['date'])!.value ? dayjs(this.editForm.get(['date'])!.value, DATE_TIME_FORMAT) : undefined,
-      user: this.editForm.get(['user'])!.value,
-      topic: this.editForm.get(['topic'])!.value,
+      topic: this.topicsSharedCollection.find(topic => topic.id?.toString() === this.topicControl.value?.toString()),
     };
+  }
+
+  private updateSelectedTopic(project: IProject): void {
+    this.editForm.get('topic')?.setValue(project.topic?.id);
   }
 }

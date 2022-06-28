@@ -19,13 +19,21 @@
         "title": "Projekt"
       },
       "id": "ID",
-      "title": "Title",
-      "description": "Description",
-      "stars": "Stars",
+      "title": "Titel",
+      "description": "Beschreibung",
+      "stars": "Sterne",
+      "star": "Gefällt mir",
+      "unstar": "Gefällt mir nicht mehr",
       "approved": "Approved",
-      "date": "Date",
-      "user": "User",
-      "topic": "Topic"
+      "date": "Datum",
+      "user": "Nutzer",
+      "topic": "Thema",
+      "none": "Nix da!",
+      "qr": "QR Code für dieses Projekt",
+      "qr-download": "Lade QR Code herunter",
+      "qr-open": "Öffne QR Code",
+      "notAllowed": "Sie haben keine Berechtigung dieses Projekt zu bearbeiten",
+      "notApproved": "Dieses Projekt ist noch nicht freigeschaltet"
     }
   }
 }

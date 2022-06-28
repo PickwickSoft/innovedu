@@ -39,9 +39,6 @@ import org.springframework.util.Base64Utils;
 @WithMockUser
 class FileResourceIT {
 
-    private static final String DEFAULT_TYPE = "AAAAAAAAAA";
-    private static final String UPDATED_TYPE = "BBBBBBBBBB";
-
     private static final byte[] DEFAULT_DATA = TestUtil.createByteArray(1, "0");
     private static final byte[] UPDATED_DATA = TestUtil.createByteArray(1, "1");
     private static final String DEFAULT_DATA_CONTENT_TYPE = "image/jpg";
@@ -49,9 +46,6 @@ class FileResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
-
-    private static final Integer DEFAULT_DIMENSION = 1;
-    private static final Integer UPDATED_DIMENSION = 2;
 
     private static final String ENTITY_API_URL = "/api/files";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -80,12 +74,7 @@ class FileResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static File createEntity(EntityManager em) {
-        File file = new File()
-            .type(DEFAULT_TYPE)
-            .data(DEFAULT_DATA)
-            .dataContentType(DEFAULT_DATA_CONTENT_TYPE)
-            .name(DEFAULT_NAME)
-            .dimension(DEFAULT_DIMENSION);
+        File file = new File().data(DEFAULT_DATA).dataContentType(DEFAULT_DATA_CONTENT_TYPE).name(DEFAULT_NAME);
         return file;
     }
 
@@ -96,12 +85,7 @@ class FileResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static File createUpdatedEntity(EntityManager em) {
-        File file = new File()
-            .type(UPDATED_TYPE)
-            .data(UPDATED_DATA)
-            .dataContentType(UPDATED_DATA_CONTENT_TYPE)
-            .name(UPDATED_NAME)
-            .dimension(UPDATED_DIMENSION);
+        File file = new File().data(UPDATED_DATA).dataContentType(UPDATED_DATA_CONTENT_TYPE).name(UPDATED_NAME);
         return file;
     }
 
@@ -125,11 +109,9 @@ class FileResourceIT {
         List<File> fileList = fileRepository.findAll();
         assertThat(fileList).hasSize(databaseSizeBeforeCreate + 1);
         File testFile = fileList.get(fileList.size() - 1);
-        assertThat(testFile.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testFile.getData()).isEqualTo(DEFAULT_DATA);
         assertThat(testFile.getDataContentType()).isEqualTo(DEFAULT_DATA_CONTENT_TYPE);
         assertThat(testFile.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testFile.getDimension()).isEqualTo(DEFAULT_DIMENSION);
     }
 
     @Test
@@ -154,48 +136,10 @@ class FileResourceIT {
 
     @Test
     @Transactional
-    void checkTypeIsRequired() throws Exception {
-        int databaseSizeBeforeTest = fileRepository.findAll().size();
-        // set the field null
-        file.setType(null);
-
-        // Create the File, which fails.
-
-        restFileMockMvc
-            .perform(
-                post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(file))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<File> fileList = fileRepository.findAll();
-        assertThat(fileList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void checkNameIsRequired() throws Exception {
         int databaseSizeBeforeTest = fileRepository.findAll().size();
         // set the field null
         file.setName(null);
-
-        // Create the File, which fails.
-
-        restFileMockMvc
-            .perform(
-                post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(file))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<File> fileList = fileRepository.findAll();
-        assertThat(fileList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkDimensionIsRequired() throws Exception {
-        int databaseSizeBeforeTest = fileRepository.findAll().size();
-        // set the field null
-        file.setDimension(null);
 
         // Create the File, which fails.
 
@@ -221,11 +165,9 @@ class FileResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(file.getId().intValue())))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE)))
             .andExpect(jsonPath("$.[*].dataContentType").value(hasItem(DEFAULT_DATA_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].data").value(hasItem(Base64Utils.encodeToString(DEFAULT_DATA))))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].dimension").value(hasItem(DEFAULT_DIMENSION)));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -258,11 +200,9 @@ class FileResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(file.getId().intValue()))
-            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE))
             .andExpect(jsonPath("$.dataContentType").value(DEFAULT_DATA_CONTENT_TYPE))
             .andExpect(jsonPath("$.data").value(Base64Utils.encodeToString(DEFAULT_DATA)))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.dimension").value(DEFAULT_DIMENSION));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME));
     }
 
     @Test
@@ -284,12 +224,7 @@ class FileResourceIT {
         File updatedFile = fileRepository.findById(file.getId()).get();
         // Disconnect from session so that the updates on updatedFile are not directly saved in db
         em.detach(updatedFile);
-        updatedFile
-            .type(UPDATED_TYPE)
-            .data(UPDATED_DATA)
-            .dataContentType(UPDATED_DATA_CONTENT_TYPE)
-            .name(UPDATED_NAME)
-            .dimension(UPDATED_DIMENSION);
+        updatedFile.data(UPDATED_DATA).dataContentType(UPDATED_DATA_CONTENT_TYPE).name(UPDATED_NAME);
 
         restFileMockMvc
             .perform(
@@ -304,11 +239,9 @@ class FileResourceIT {
         List<File> fileList = fileRepository.findAll();
         assertThat(fileList).hasSize(databaseSizeBeforeUpdate);
         File testFile = fileList.get(fileList.size() - 1);
-        assertThat(testFile.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testFile.getData()).isEqualTo(UPDATED_DATA);
         assertThat(testFile.getDataContentType()).isEqualTo(UPDATED_DATA_CONTENT_TYPE);
         assertThat(testFile.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testFile.getDimension()).isEqualTo(UPDATED_DIMENSION);
     }
 
     @Test
@@ -383,8 +316,6 @@ class FileResourceIT {
         File partialUpdatedFile = new File();
         partialUpdatedFile.setId(file.getId());
 
-        partialUpdatedFile.type(UPDATED_TYPE);
-
         restFileMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedFile.getId())
@@ -398,11 +329,9 @@ class FileResourceIT {
         List<File> fileList = fileRepository.findAll();
         assertThat(fileList).hasSize(databaseSizeBeforeUpdate);
         File testFile = fileList.get(fileList.size() - 1);
-        assertThat(testFile.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testFile.getData()).isEqualTo(DEFAULT_DATA);
         assertThat(testFile.getDataContentType()).isEqualTo(DEFAULT_DATA_CONTENT_TYPE);
         assertThat(testFile.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testFile.getDimension()).isEqualTo(DEFAULT_DIMENSION);
     }
 
     @Test
@@ -417,12 +346,7 @@ class FileResourceIT {
         File partialUpdatedFile = new File();
         partialUpdatedFile.setId(file.getId());
 
-        partialUpdatedFile
-            .type(UPDATED_TYPE)
-            .data(UPDATED_DATA)
-            .dataContentType(UPDATED_DATA_CONTENT_TYPE)
-            .name(UPDATED_NAME)
-            .dimension(UPDATED_DIMENSION);
+        partialUpdatedFile.data(UPDATED_DATA).dataContentType(UPDATED_DATA_CONTENT_TYPE).name(UPDATED_NAME);
 
         restFileMockMvc
             .perform(
@@ -437,11 +361,9 @@ class FileResourceIT {
         List<File> fileList = fileRepository.findAll();
         assertThat(fileList).hasSize(databaseSizeBeforeUpdate);
         File testFile = fileList.get(fileList.size() - 1);
-        assertThat(testFile.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testFile.getData()).isEqualTo(UPDATED_DATA);
         assertThat(testFile.getDataContentType()).isEqualTo(UPDATED_DATA_CONTENT_TYPE);
         assertThat(testFile.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testFile.getDimension()).isEqualTo(UPDATED_DIMENSION);
     }
 
     @Test

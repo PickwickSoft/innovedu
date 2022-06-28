@@ -2,27 +2,27 @@
   "innoveduApp": {
     "file": {
       "home": {
-        "title": "Files",
+        "title": "Dateien",
         "refreshListLabel": "Liste aktualisieren",
-        "createLabel": "File erstellen",
-        "createOrEditLabel": "File erstellen oder bearbeiten",
-        "notFound": "Keine Files gefunden"
+        "createLabel": "Datei erstellen",
+        "createOrEditLabel": "Datei erstellen oder bearbeiten",
+        "notFound": "Keine Dateien gefunden"
       },
-      "created": "File erstellt mit ID {{ param }}",
-      "updated": "File aktualisiert mit ID {{ param }}",
-      "deleted": "File gelöscht mit ID {{ param }}",
+      "created": "Datei erstellt mit ID {{ param }}",
+      "updated": "Datei aktualisiert mit ID {{ param }}",
+      "deleted": "Datei gelöscht mit ID {{ param }}",
       "delete": {
-        "question": "Soll File {{ id }} wirklich dauerhaft gelöscht werden?"
+        "question": "Soll Datei {{ id }} wirklich dauerhaft gelöscht werden?"
       },
       "detail": {
-        "title": "File"
+        "title": "Datei"
       },
       "id": "ID",
       "type": "Type",
       "data": "Data",
       "name": "Name",
       "dimension": "Dimension",
-      "project": "Project"
+      "project": "Projekt"
     }
   }
 }

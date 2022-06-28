@@ -1,18 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { Authority } from '../config/authority.constants';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
       {
-        path: 'project',
+        path: '',
         data: { pageTitle: 'innoveduApp.project.home.title' },
         loadChildren: () => import('./project/project.module').then(m => m.ProjectModule),
-      },
-      {
-        path: 'topic',
-        data: { pageTitle: 'innoveduApp.topic.home.title' },
-        loadChildren: () => import('./topic/topic.module').then(m => m.TopicModule),
       },
       {
         path: 'file',

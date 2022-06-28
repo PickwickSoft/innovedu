@@ -8,21 +8,6 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
-          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
-          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="innoveduApp.file.type" for="field_type">Type</label>
-          <input type="text" class="form-control" name="type" id="field_type" data-cy="type" formControlName="type" />
-          <div *ngIf="editForm.get('type')!.invalid && (editForm.get('type')!.dirty || editForm.get('type')!.touched)">
-            <small class="form-text text-danger" *ngIf="editForm.get('type')?.errors?.required" jhiTranslate="entity.validation.required">
-              This field is required.
-            </small>
-          </div>
-        </div>
-
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="innoveduApp.file.data" for="field_data">Data</label>
           <div>
@@ -78,27 +63,6 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="innoveduApp.file.dimension" for="field_dimension">Dimension</label>
-          <input type="number" class="form-control" name="dimension" id="field_dimension" data-cy="dimension" formControlName="dimension" />
-          <div *ngIf="editForm.get('dimension')!.invalid && (editForm.get('dimension')!.dirty || editForm.get('dimension')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('dimension')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('dimension')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              This field should be a number.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
           <label class="form-label" jhiTranslate="innoveduApp.file.project" for="field_project">Project</label>
           <select class="form-control" id="field_project" data-cy="project" name="project" formControlName="project">
             <option [ngValue]="null"></option>
@@ -113,16 +77,17 @@
       </div>
 
       <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+        <button mat-button color="accent" type="button" id="cancel-save" data-cy="entityCreateCancelButton" (click)="previousState()">
           <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
 
         <button
+          mat-raised-button
+          color="primary"
           type="submit"
           id="save-entity"
           data-cy="entityCreateSaveButton"
           [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
         >
           <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
         </button>

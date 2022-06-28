@@ -3,15 +3,17 @@
     <span jhiTranslate="innoveduApp.file.home.title">Files</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+      <button mat-raised-button class="me-2" (click)="loadAll()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="innoveduApp.file.home.refreshListLabel">Refresh List</span>
       </button>
 
       <button
+        mat-raised-button
+        color="primary"
         id="jh-create-entity"
         data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-file"
+        class="jh-create-entity create-file"
         [routerLink]="['/file/new']"
       >
         <fa-icon icon="plus"></fa-icon>
@@ -28,56 +30,72 @@
     <span jhiTranslate="innoveduApp.file.home.notFound">No files found</span>
   </div>
 
-  <div class="table-responsive" id="entities" *ngIf="files && files.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr>
-          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="innoveduApp.file.type">Type</span></th>
-          <th scope="col"><span jhiTranslate="innoveduApp.file.data">Data</span></th>
-          <th scope="col"><span jhiTranslate="innoveduApp.file.name">Name</span></th>
-          <th scope="col"><span jhiTranslate="innoveduApp.file.dimension">Dimension</span></th>
-          <th scope="col"><span jhiTranslate="innoveduApp.file.project">Project</span></th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let file of files; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/file', file.id, 'view']">{{ file.id }}</a>
-          </td>
-          <td>{{ file.type }}</td>
-          <td>
-            <a *ngIf="file.data" (click)="openFile(file.data, file.dataContentType)" jhiTranslate="entity.action.open">open</a>
-            <span *ngIf="file.data">{{ file.dataContentType }}, {{ byteSize(file.data) }}</span>
-          </td>
-          <td>{{ file.name }}</td>
-          <td>{{ file.dimension }}</td>
-          <td>
-            <div *ngIf="file.project">
-              <a [routerLink]="['/project', file.project?.id, 'view']">{{ file.project?.title }}</a>
-            </div>
-          </td>
-          <td class="text-end">
-            <div class="btn-group">
-              <button type="submit" [routerLink]="['/file', file.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
+  <mat-form-field class="search" [hidden]="!dataSource">
+    <mat-label>Filter</mat-label>
+    <input matInput autocomplete="off" [(ngModel)]="value" (keyup)="filter()" placeholder="Ex. Readme" #input />
+    <button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value = ''; filter()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
 
-              <button type="submit" [routerLink]="['/file', file.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-              </button>
+  <div id="entities" *ngIf="dataSource && files && files.length > 0">
+    <table mat-table [dataSource]="dataSource" aria-describedby="page-heading">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef jhiTranslate="global.field.id">ID</th>
+        <td mat-cell *matCellDef="let file">
+          <a [routerLink]="['/file', file.id, 'view']">{{ file.id }}</a>
+        </td>
+      </ng-container>
 
-              <button type="submit" (click)="delete(file)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
+      <ng-container matColumnDef="data">
+        <th mat-header-cell *matHeaderCellDef jhiTranslate="innoveduApp.file.data">Data</th>
+        <td mat-cell *matCellDef="let file">
+          <a *ngIf="file.data" (click)="openFile(file.data, file.dataContentType)" jhiTranslate="entity.action.open">open</a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef jhiTranslate="innoveduApp.file.name">Name</th>
+        <td mat-cell *matCellDef="let file">{{ file.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="project">
+        <th mat-header-cell *matHeaderCellDef jhiTranslate="innoveduApp.file.project">Project</th>
+        <td mat-cell *matCellDef="let file">
+          <div *ngIf="file.project">
+            <a [routerLink]="['/project', file.project?.id, 'view']">{{ file.project?.title }}</a>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let file" class="text-end">
+          <div class="btn-group">
+            <button type="submit" [routerLink]="['/file', file.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+              <fa-icon icon="eye"></fa-icon>
+              <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+            </button>
+
+            <button type="submit" [routerLink]="['/file', file.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+              <fa-icon icon="pencil-alt"></fa-icon>
+              <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+
+            <button type="submit" (click)="delete(file)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <fa-icon icon="times"></fa-icon>
+              <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{ input.value }}"</td>
+      </tr>
     </table>
   </div>
 </div>

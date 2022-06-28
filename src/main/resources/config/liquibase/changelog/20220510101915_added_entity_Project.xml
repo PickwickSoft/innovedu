@@ -11,7 +11,7 @@
     -->
     <changeSet id="20220510101915-1" author="jhipster">
         <createTable tableName="project">
-            <column name="id" type="bigint">
+            <column name="id" type="uuid">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="title" type="varchar(255)">
@@ -19,9 +19,6 @@
             </column>
             <column name="description" type="varchar(255)">
                 <constraints nullable="false" />
-            </column>
-            <column name="stars" type="integer">
-                <constraints nullable="true" />
             </column>
             <column name="approved" type="boolean">
                 <constraints nullable="false" />
