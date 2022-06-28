@@ -16,7 +16,7 @@ services:
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     ports:
-      - 127.0.0.1:8080:8080
+      - 8080:8080
   innovedu-postgresql:
     image: postgres:14.2
     # volumes:
@@ -28,7 +28,7 @@ services:
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     ports:
-      - 127.0.0.1:5432:5432
+      - 5432:5432
   keycloak:
     image: jboss/keycloak:16.1.0
     command:
@@ -51,6 +51,6 @@ services:
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     ports:
-      - 127.0.0.1:9080:9080
-      - 127.0.0.1:9443:9443
-      - 127.0.0.1:10990:10990
+      - 9080:9080
+      - 9443:9443
+      - 10990:10990
