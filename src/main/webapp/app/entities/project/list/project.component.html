@@ -16,10 +16,12 @@
   </div>
   <h2 id="page-heading" class="mb-8" data-cy="ProjectHeading" *ngIf="account !== null">
     <div class="d-flex justify-content-end space-x-1">
-      <button mat-raised-button (click)="reset()" [disabled]="isLoading">
+      <!----
+      <button mat-button (click)="reset()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="innoveduApp.project.home.refreshListLabel">Refresh List</span>
       </button>
+      ---->
 
       <button
         mat-raised-button
@@ -46,7 +48,7 @@
   <div [ngSwitch]="account !== null">
     <div *ngSwitchCase="true">
       <div *ngIf="userProjects && userProjects.length > 0">
-        <p class="">My projects</p>
+        <p class="project-section">My projects</p>
         <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-y-4 gap-x-10 mr-auto ml-auto pb-20">
           <a *ngFor="let project of userProjects; trackBy: trackId" [routerLink]="['/project', project.id, 'view']">
             <mat-card class="project-card hover:shadow-xl">
@@ -63,8 +65,10 @@
         </div>
       </div>
 
-      <div *ngIf="projects && projects.length > 0">
-        <p class="">All (other) projects</p>
+      <mat-divider></mat-divider>
+
+      <div *ngIf="projects && projects.length > 0" class="mt-8">
+        <p class="project-section">All (other) projects</p>
         <div
           infinite-scroll
           (scrolled)="loadPage(page + 1)"
