@@ -1,7 +1,14 @@
 <div class="d-flex justify-content-center">
   <div class="">
-    <div class="text-center max-w-3xl mr-auto ml-auto" *ngIf="project">
+    <div
+      class="text-center max-w-3xl mr-auto ml-auto"
+      *ngIf="project && (project.user?.login === account?.login || project?.approved === true)"
+    >
       <jhi-alert-error></jhi-alert-error>
+
+      <div class="alert alert-warning" *ngIf="project?.approved === false">
+        <span jhiTranslate="innoveduApp.project.notApproved">This project has not been approved yet</span>
+      </div>
 
       <jhi-alert></jhi-alert>
       <h1 class="text-theme text-5xl font-medium pb-6">{{ project.title }}</h1>
