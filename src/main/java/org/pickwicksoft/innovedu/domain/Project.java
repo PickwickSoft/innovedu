@@ -1,7 +1,10 @@
 package org.pickwicksoft.innovedu.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -46,6 +49,11 @@ public class Project implements Serializable, UserAssignable {
 
     @ManyToOne
     private Topic topic;
+
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = { "user" })
+    @JsonManagedReference
+    private List<Star> stars;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -169,5 +177,13 @@ public class Project implements Serializable, UserAssignable {
             ", approved='" + getApproved() + "'" +
             ", date='" + getDate() + "'" +
             "}";
+    }
+
+    public List<Star> getStars() {
+        return stars;
+    }
+
+    public void setStars(List<Star> stars) {
+        this.stars = stars;
     }
 }

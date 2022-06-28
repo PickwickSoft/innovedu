@@ -1,5 +1,6 @@
 package org.pickwicksoft.innovedu.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
@@ -15,8 +16,10 @@ public class Star implements UserAssignable {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JsonIgnoreProperties(value = { "user", "topic" }, allowSetters = true)
+    @JoinColumn(name = "project_id", nullable = false)
+    @JsonBackReference
     private Project project;
 
     @OneToOne
