@@ -53,7 +53,7 @@
               <mat-card-title>{{ project.title }}</mat-card-title>
               <mat-card-subtitle>
                 <fa-icon class="text-yellow-400" icon="star" [fixedWidth]="true"></fa-icon>
-                {{ project.stars }}
+                {{ project.stars?.length }}
               </mat-card-subtitle>
               <mat-card-content class="two-lines">
                 {{ project.description }}
@@ -83,7 +83,7 @@
               <mat-card-title>{{ project.title }}</mat-card-title>
               <mat-card-subtitle>
                 <fa-icon class="text-yellow-400" icon="star" [fixedWidth]="true"></fa-icon>
-                {{ project.stars }}
+                {{ project.stars?.length }}
               </mat-card-subtitle>
               <mat-card-content class="two-lines">
                 {{ project.description }}
@@ -110,7 +110,7 @@
             <mat-card-title>{{ project.title }}</mat-card-title>
             <mat-card-subtitle>
               <fa-icon class="text-yellow-400" icon="star" [fixedWidth]="true"></fa-icon>
-              {{ project.stars }}
+              {{ project.stars?.length }}
             </mat-card-subtitle>
             <mat-card-content class="two-lines">
               {{ project.description }}

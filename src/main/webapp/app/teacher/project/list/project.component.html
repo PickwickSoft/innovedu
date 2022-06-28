@@ -54,7 +54,7 @@
         <tr *ngFor="let project of projects; trackBy: trackId" data-cy="entityTable">
           <td>{{ project.title }}</td>
           <td>{{ project.description }}</td>
-          <td>{{ project.stars }}</td>
+          <td>{{ project.stars?.length }}</td>
           <td>{{ project.approved }}</td>
           <td>{{ project.date | formatMediumDatetime }}</td>
           <td>{{ project.user?.firstName }} {{ project.user?.lastName }}</td>
