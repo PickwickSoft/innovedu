@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
@@ -22,12 +22,14 @@ export class FileUpdateComponent implements OnInit {
 
   projectsSharedCollection: IProject[] = [];
 
+  projectControl = new FormControl();
+
   editForm = this.fb.group({
     id: [],
     data: [null, [Validators.required]],
     dataContentType: [],
     name: [null, [Validators.required, Validators.minLength(3)]],
-    project: [],
+    project: this.projectControl,
   });
 
   constructor(
@@ -44,6 +46,8 @@ export class FileUpdateComponent implements OnInit {
       this.updateForm(file);
 
       this.loadRelationshipsOptions();
+
+      this.updateSelectedProject(file.project);
     });
   }
 
@@ -128,7 +132,11 @@ export class FileUpdateComponent implements OnInit {
       dataContentType: this.editForm.get(['dataContentType'])!.value,
       data: this.editForm.get(['data'])!.value,
       name: this.editForm.get(['name'])!.value,
-      project: this.editForm.get(['project'])!.value,
+      project: this.projectsSharedCollection.find(project => project.id?.toString() === this.projectControl.value?.toString()),
     };
+  }
+
+  private updateSelectedProject(project: IProject): void {
+    this.editForm.get('project')?.setValue(project.id);
   }
 }
