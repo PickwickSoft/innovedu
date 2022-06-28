@@ -26,9 +26,6 @@ public class StarResource {
 
     private final Logger log = LoggerFactory.getLogger(TopicResource.class);
 
-    @Value("${jhipster.clientApp.name}")
-    private String applicationName;
-
     private static final String ENTITY_NAME = "star";
 
     private final ProjectRepository projectRepository;
