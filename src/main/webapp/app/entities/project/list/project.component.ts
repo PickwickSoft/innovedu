@@ -180,6 +180,7 @@ export class ProjectComponent implements OnInit {
     }
     if (this.initialSize === -1) {
       this.initialSize = this.projects.length;
+      this.initialSize += this.userProjects.length;
     }
   }
 }
