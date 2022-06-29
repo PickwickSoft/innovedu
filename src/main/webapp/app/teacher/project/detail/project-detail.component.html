@@ -40,6 +40,17 @@
             <a [routerLink]="['/topic', project.topic?.id, 'view']">{{ project.topic?.title }}</a>
           </div>
         </dd>
+        <dt *ngIf="files && files?.length != 0">
+          <fa-icon class="pr-1" icon="paperclip"></fa-icon>
+          <span jhiTranslate="innoveduApp.project.files">Files</span>
+        </dt>
+        <dd *ngIf="files && files?.length != 0">
+          <span class="pr-4" *ngFor="let file of files">
+            <a *ngIf="file.data" (click)="openFile(file.data, file.dataContentType)">
+              {{ file.name }}.{{ getExtension(file.dataContentType) }}
+            </a>
+          </span>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

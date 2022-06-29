@@ -65,7 +65,7 @@
         </div>
       </div>
 
-      <mat-divider></mat-divider>
+      <mat-divider *ngIf="userProjects && userProjects.length > 0 && projects && projects.length > 0"></mat-divider>
 
       <div *ngIf="projects && projects.length > 0" class="mt-8">
         <p class="project-section">All (other) projects</p>

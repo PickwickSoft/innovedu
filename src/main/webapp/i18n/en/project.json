@@ -28,6 +28,7 @@
       "date": "Date",
       "user": "User",
       "topic": "Topic",
+      "files": "Files",
       "none": "None",
       "qr": "QR Code for this project",
       "qr-download": "Download QR Code",
