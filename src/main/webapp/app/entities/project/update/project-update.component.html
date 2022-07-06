@@ -21,7 +21,8 @@
 
         <mat-form-field appearance="outline" class="w-full pb-3">
           <mat-label jhiTranslate="innoveduApp.project.title">Title</mat-label>
-          <input type="text" matInput formControlName="title" data-cy="title" placeholder="My cool title..." />
+          <input type="text" matInput formControlName="title" data-cy="title" placeholder="My cool title..." maxlength="255" />
+          <mat-hint align="end">{{ description.value.length }} / 255</mat-hint>
           <mat-error *ngIf="editForm.get('title')?.errors?.required" jhiTranslate="entity.validation.required">
             This field is required.
           </mat-error>
