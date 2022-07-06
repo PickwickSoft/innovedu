@@ -49,13 +49,19 @@
     <div *ngSwitchCase="true">
       <div *ngIf="userProjects && userProjects.length > 0">
         <p class="project-section">My projects</p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-y-4 gap-x-10 mr-auto ml-auto pb-20">
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-y-8 gap-x-10 mr-auto ml-auto pb-20">
           <a *ngFor="let project of userProjects; trackBy: trackId" [routerLink]="['/project', project.id, 'view']">
             <mat-card class="project-card hover:shadow-xl">
               <mat-card-title>{{ project.title }}</mat-card-title>
               <mat-card-subtitle>
-                <fa-icon class="text-yellow-400" icon="star" [fixedWidth]="true"></fa-icon>
-                {{ project.stars?.length }}
+                <span *ngIf="project.approved">
+                  <fa-icon class="text-yellow-400" icon="star" [fixedWidth]="true"></fa-icon>
+                  {{ project.stars?.length }}
+                </span>
+                <span *ngIf="!project.approved">
+                  <fa-icon class="text-orange-400" icon="triangle-exclamation" [fixedWidth]="true"></fa-icon>
+                  <span jhiTranslate="innoveduApp.project.notApproved"> Project not approved yet! </span>
+                </span>
               </mat-card-subtitle>
               <mat-card-content class="two-lines">
                 {{ project.description }}
@@ -75,7 +81,7 @@
           [infiniteScrollDisabled]="page >= links['last']"
           [infiniteScrollDistance]="0"
           id="entities"
-          class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-y-4 gap-x-10 mr-auto ml-auto"
+          class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-y-8 gap-x-10 mr-auto ml-auto"
           data-cy="entityTable"
         >
           <a
@@ -106,7 +112,7 @@
         [infiniteScrollDisabled]="page >= links['last']"
         [infiniteScrollDistance]="0"
         id="entities"
-        class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-y-4 gap-x-10 mr-auto ml-auto"
+        class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-y-8 gap-x-10 mr-auto ml-auto"
         data-cy="entityTable"
       >
         <a *ngFor="let project of projects; trackBy: trackId" [routerLink]="['/project', project.id, 'view']" data-cy="entityDetailsButton">
