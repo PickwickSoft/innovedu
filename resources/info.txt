@@ -1,0 +1,8 @@
+font name: Lekton-Regular
+font link: https://fonts.google.com/specimen/Lekton
+font author: ISIA Urbino
+font author site: http://lektongroups.blogspot.ca/
+Slogan Font: Lekton-Regular
+
+icon designer: Gregor Cresnar
+icon designer link: /grega.cresnar

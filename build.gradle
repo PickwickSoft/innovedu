@@ -180,7 +180,7 @@ checkstyle {
     checkstyleTest.enabled = false
 }
 nohttp {
-    source.include "build.gradle", "README.md"
+    source.include "build.gradle", "HACKING.md", "HACKING.md"
 }
 
 configurations {
