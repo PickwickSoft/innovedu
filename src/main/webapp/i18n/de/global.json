@@ -9,7 +9,7 @@
         "main": "Entitäten",
         "project": "Projekt",
         "topic": "Thema",
-        "file": "Datei",
+        "file": "Dateien",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
@@ -87,7 +87,8 @@
       }
     },
     "field": {
-      "id": "ID"
+      "id": "ID",
+      "open": "Öffnen"
     },
     "ribbon": {
       "dev": "Entwicklung"

@@ -11,12 +11,13 @@ import { MatTableDataSource } from '@angular/material/table';
 @Component({
   selector: 'jhi-file',
   templateUrl: './file.component.html',
+  styleUrls: ['./file.component.scss'],
 })
 export class FileComponent implements OnInit {
   files?: IFile[];
   isLoading = false;
   dataSource?: MatTableDataSource<IFile>;
-  displayedColumns = ['id', 'data', 'name', 'project', 'actions'];
+  displayedColumns = ['id', 'name', 'project'];
   value: any;
 
   constructor(protected fileService: FileService, protected dataUtils: DataUtils, protected modalService: NgbModal) {}
