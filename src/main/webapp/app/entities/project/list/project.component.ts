@@ -11,6 +11,8 @@ import { ParseLinks } from 'app/core/util/parse-links.service';
 import { debounceTime, Subject } from 'rxjs';
 import { Account } from '../../../core/auth/account.model';
 import { AccountService } from '../../../core/auth/account.service';
+import { IContent } from '../../../admin/content/content.model';
+import { ContentService } from '../../../admin/content/content.service';
 
 @Component({
   selector: 'jhi-project',
@@ -30,9 +32,11 @@ export class ProjectComponent implements OnInit {
   value: any;
   debounceSearch: Subject<any> = new Subject<any>();
   account: Account | null = null;
+  content: IContent | null = null;
 
   constructor(
     protected projectService: ProjectService,
+    protected contentService: ContentService,
     protected modalService: NgbModal,
     protected parseLinks: ParseLinks,
     private accountService: AccountService
@@ -48,6 +52,14 @@ export class ProjectComponent implements OnInit {
     this.predicate = 'id';
     this.ascending = true;
     this.value = '';
+  }
+
+  ngOnInit(): void {
+    this.accountService.identity().subscribe(account => (this.account = account));
+    this.debounceSearch.pipe(debounceTime(1000)).subscribe(() => {
+      this.reset();
+    });
+    this.load();
   }
 
   loadAll(): void {
@@ -113,6 +125,7 @@ export class ProjectComponent implements OnInit {
   }
 
   load(): void {
+    this.loadContent();
     if (this.account !== null) {
       this.loadAllOfUser();
       this.loadAllExcludeUser();
@@ -130,14 +143,6 @@ export class ProjectComponent implements OnInit {
 
   loadPage(page: number): void {
     this.page = page;
-    this.load();
-  }
-
-  ngOnInit(): void {
-    this.accountService.identity().subscribe(account => (this.account = account));
-    this.debounceSearch.pipe(debounceTime(500)).subscribe(() => {
-      this.reset();
-    });
     this.load();
   }
 
@@ -182,5 +187,13 @@ export class ProjectComponent implements OnInit {
       this.initialSize = this.projects.length;
       this.initialSize += this.userProjects.length;
     }
+  }
+
+  private loadContent(): void {
+    this.contentService.query().subscribe((res: HttpResponse<IContent[]>) => {
+      if (res.body && res.body.length > 0) {
+        this.content = res.body[0];
+      }
+    });
   }
 }

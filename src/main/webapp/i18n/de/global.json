@@ -28,6 +28,7 @@
         "metrics": "Metriken",
         "health": "Status",
         "configuration": "Konfiguration",
+        "content": "Inhalt",
         "logs": "Protokoll",
         "apidocs": "API",
         "database": "Datenbank",
@@ -144,5 +145,10 @@
       "not.image": "Es wird erwartet, dass die Datei ein Bild ist. Die Datei ist jedoch vom Typ \"{{ fileType }}\""
     }
   },
-  "footer": "Dies ist Ihre Fußzeile"
+  "footer": "Dies ist Ihre Fußzeile",
+  "content": {
+    "edit": "Bearbeiten Sie die Inhalte der Startseite",
+    "title": "Titel",
+    "description": "Beschreibung"
+  }
 }

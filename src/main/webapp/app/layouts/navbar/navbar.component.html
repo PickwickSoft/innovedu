@@ -27,7 +27,7 @@
             </span>
           </a>
         </li>
-        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngSwitchCase="true">
           <a
             class="nav-link"
             routerLink="file"
@@ -106,6 +106,12 @@
               <a class="dropdown-item" routerLink="admin/configuration" routerLinkActive="active" (click)="collapseNavbar()">
                 <fa-icon icon="cogs" [fixedWidth]="true"></fa-icon>
                 <span jhiTranslate="global.menu.admin.configuration">Configuration</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="admin/content" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="pencil-alt" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.admin.content">Content</span>
               </a>
             </li>
             <li>

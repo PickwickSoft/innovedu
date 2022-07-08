@@ -28,6 +28,7 @@
         "metrics": "Metrics",
         "health": "Health",
         "configuration": "Configuration",
+        "content": "Content",
         "logs": "Logs",
         "apidocs": "API",
         "database": "Database",
@@ -145,5 +146,10 @@
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
     }
   },
-  "footer": "This is your footer"
+  "footer": "This is your footer",
+  "content": {
+    "edit": "Edit the content on home page",
+    "title": "Title",
+    "description": "Description"
+  }
 }
