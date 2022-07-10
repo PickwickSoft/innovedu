@@ -5,7 +5,7 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="starPK"/>
             </column>
-            <column name="project_id" type="BINARY"/>
+            <column name="project_id" type="uuid"/>
             <column name="user_id" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
