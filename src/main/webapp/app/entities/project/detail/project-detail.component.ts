@@ -94,6 +94,11 @@ export class ProjectDetailComponent implements OnInit {
     this.resetStars();
   }
 
+  toHtml(text: string): string {
+    // Convert text to HTML
+    return text.replace(/\n/g, '<br>');
+  }
+
   private resetStars(): void {
     this.starService.queryProjectStars(this.project!.id!).subscribe(stars => {
       this.stars = stars.body;
