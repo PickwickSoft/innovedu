@@ -43,6 +43,7 @@ export class ProjectComponent implements OnInit {
   ) {
     this.projects = [];
     this.userProjects = [];
+    this.account = null;
     this.initialSize = -1;
     this.itemsPerPage = ITEMS_PER_PAGE;
     this.page = 0;
@@ -126,7 +127,7 @@ export class ProjectComponent implements OnInit {
 
   load(): void {
     this.loadContent();
-    if (this.account !== null) {
+    if (this.account) {
       this.loadAllOfUser();
       this.loadAllExcludeUser();
     } else {
