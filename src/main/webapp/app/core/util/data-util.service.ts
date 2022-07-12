@@ -62,6 +62,22 @@ export class DataUtils {
       const eventTarget: HTMLInputElement | null = event.target as HTMLInputElement | null;
       if (eventTarget?.files?.[0]) {
         const file: File = eventTarget.files[0];
+        if (file.size > 10000000) {
+          observer.error({
+            message: 'File is too big. Max Size is 10MB',
+            key: 'too.big',
+            params: { fileSize: this.formatAsBytes(file.size) },
+          });
+          return;
+        }
+        if (this.isNotValidFileType(file)) {
+          observer.error({
+            message: 'File type is not supported',
+            key: 'not.supported',
+            params: { fileType: file.type },
+          });
+          return;
+        }
         if (isImage && !file.type.startsWith('image/')) {
           const error: FileLoadError = {
             message: `File was expected to be an image but was found to be '${file.type}'`,
@@ -125,5 +141,14 @@ export class DataUtils {
 
   private formatAsBytes(size: number): string {
     return size.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' bytes';
+  }
+
+  private isNotValidFileType(file: File): boolean {
+    const fileType: string = file.type;
+    // Videos, Images and PDFs are allowed
+    if (fileType.startsWith('video/') || fileType.startsWith('image/') || fileType.startsWith('application/pdf')) {
+      return false;
+    }
+    return true;
   }
 }
