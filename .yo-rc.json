@@ -22,6 +22,9 @@
     "enableTranslation": true,
     "entities": ["Project", "Topic", "File"],
     "entitySuffix": "",
+    "herokuAppName": "innovedu",
+    "herokuDeployType": "jar",
+    "herokuJavaVersion": "11",
     "jhiPrefix": "jhi",
     "jhipsterVersion": "7.8.1",
     "languages": ["de", "en"],
@@ -41,6 +44,7 @@
     "skipFakeData": false,
     "skipUserManagement": true,
     "testFrameworks": ["cypress"],
+    "useOkta": false,
     "websocket": false,
     "withAdminUi": true
   }

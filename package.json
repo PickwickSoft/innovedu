@@ -2,7 +2,7 @@
   "name": "innovedu",
   "version": "0.0.1-SNAPSHOT",
   "private": true,
-  "description": "Description for innovedu",
+  "description": " InnovEDU is a web software to publish and manage student projects at schools and universities! ",
   "license": "GPL-3.0",
   "scripts": {
     "app:start": "./gradlew",
