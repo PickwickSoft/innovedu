@@ -64,6 +64,27 @@ export class AccountService {
     return this.accountCache$.pipe(catchError(() => of(null)));
   }
 
+  identitySync(force?: boolean): Promise<Account | null | undefined> {
+    if (!this.accountCache$ || force) {
+      this.accountCache$ = this.fetch().pipe(
+        tap((account: Account) => {
+          this.authenticate(account);
+
+          // After retrieve the account info, the language will be changed to
+          // the user's preferred language configured in the account setting
+          // unless user have choosed other language in the current session
+          if (!this.sessionStorageService.retrieve('locale')) {
+            this.translateService.use(account.langKey);
+          }
+
+          this.navigateToStoredUrl();
+        }),
+        shareReplay()
+      );
+    }
+    return this.accountCache$.pipe(catchError(() => of(null))).toPromise();
+  }
+
   isAuthenticated(): boolean {
     return this.userIdentity !== null;
   }

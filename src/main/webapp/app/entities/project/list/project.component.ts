@@ -55,12 +55,17 @@ export class ProjectComponent implements OnInit {
     this.value = '';
   }
 
-  ngOnInit(): void {
-    this.accountService.identity().subscribe(account => (this.account = account));
+  async ngOnInit(): Promise<any> {
+    await this.getAccount();
     this.debounceSearch.pipe(debounceTime(1000)).subscribe(() => {
       this.reset();
     });
     this.load();
+  }
+
+  async getAccount(): Promise<any> {
+    const account = await this.accountService.identitySync();
+    this.account = account!;
   }
 
   loadAll(): void {
@@ -127,7 +132,7 @@ export class ProjectComponent implements OnInit {
 
   load(): void {
     this.loadContent();
-    if (this.account) {
+    if (this.account !== null) {
       this.loadAllOfUser();
       this.loadAllExcludeUser();
     } else {
