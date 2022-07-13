@@ -22,7 +22,7 @@
     "enableTranslation": true,
     "entities": ["Project", "Topic", "File"],
     "entitySuffix": "",
-    "herokuAppName": "innovedu",
+    "herokuAppName": "projekte-isgy",
     "herokuDeployType": "git",
     "herokuJavaVersion": "11",
     "jhiPrefix": "jhi",
