@@ -1,6 +1,6 @@
 {
   "name": "innovedu",
-  "version": "0.0.1-SNAPSHOT",
+  "version": "1.0.0",
   "private": true,
   "description": " InnovEDU is a web software to publish and manage student projects at schools and universities! ",
   "license": "GPL-3.0",
