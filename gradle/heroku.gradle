@@ -1,7 +1,7 @@
 apply plugin: "com.heroku.sdk.heroku-gradle"
 
 heroku {
-    appName = "innovedu"
+    appName = "projekte-isgy"
     buildpacks = ["heroku/jvm"]
 }
 
