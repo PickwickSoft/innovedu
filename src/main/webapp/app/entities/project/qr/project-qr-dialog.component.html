@@ -3,16 +3,21 @@
 
   <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="cancel()">&times;</button>
 </div>
-<div class="">
+<div class="w-64">
   <div>
-    <qrcode (qrCodeURL)="onChangeURL($event)" [qrdata]="getURLForProject(project!)" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+    <qrcode
+      #parent
+      (qrCodeURL)="onChangeURL($event)"
+      [qrdata]="getURLForProject(project!)"
+      [elementType]="elementType"
+      [width]="400"
+      [errorCorrectionLevel]="'M'"
+    ></qrcode>
   </div>
   <div>
-    <a [href]="qrCodeDownloadLink" download="qrcode">
-      <button mat-button>
-        <fa-icon class="pr-0.5" icon="download"></fa-icon>
-        <span jhiTranslate="innoveduApp.project.qr-download">Download QR Code</span>
-      </button>
-    </a>
+    <button mat-raised-button color="primary" class="qr-button" (click)="saveAsImage(parent)">
+      <fa-icon icon="download"></fa-icon>
+      Download QR Code Image
+    </button>
   </div>
 </div>
