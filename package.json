@@ -130,7 +130,7 @@
     "@typescript-eslint/eslint-plugin": "5.18.0",
     "@typescript-eslint/parser": "5.18.0",
     "autoprefixer": "^10.4.7",
-    "browser-sync": "2.27.11",
+    "browser-sync": "2.29.0",
     "browser-sync-webpack-plugin": "2.3.0",
     "concurrently": "7.1.0",
     "copy-webpack-plugin": "10.2.4",
